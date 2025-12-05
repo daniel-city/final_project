@@ -1,0 +1,22 @@
+{
+    "status": 1,
+    "walkscore": 99,
+    "description": "Walker's Paradise",
+    "updated": "2025-07-07 22:50:46.686886",
+    "logo_url": "https://cdn.walk.sc/images/api-logo.png",
+    "more_info_icon": "https://cdn.walk.sc/images/api-more-info.gif",
+    "more_info_link": "https://www.redfin.com/how-walk-score-works",
+    "ws_link": "https://www.walkscore.com/score/loc/lat=47.6085/lng=-122.3295/?utm_source=umich.edu&utm_medium=ws_api&utm_campaign=ws_api",
+    "help_link": "https://www.redfin.com/how-walk-score-works",
+    "snapped_lat": 47.6085,
+    "snapped_lon": -122.3295,
+    "transit": {
+        "description": "Rider's Paradise",
+        "summary": "83 nearby routes: 70 bus, 6 rail, 7 other",
+        "score": 100
+    },
+    "bike": {
+        "description": "Very Bikeable",
+        "score": 76
+    }
+}
