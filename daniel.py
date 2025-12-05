@@ -26,3 +26,7 @@ if response.status_code == 200:
         print("Response:", response.text)
 else:
     print(f"Error:  + {response.status_code}")
+
+with open("traffic_flow_data.json", "w") as f:
+    json.dump(data, f, indent=4)
+    
