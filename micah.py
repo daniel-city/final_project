@@ -107,7 +107,7 @@ def get_walkscore(lat, lon):
         print("ERROR:", e)
         return None
 
-conn = sqlite3.connect("walkscore.db")
+conn = sqlite3.connect("test.db")
 cur = conn.cursor()
 cur.execute("""CREATE TABLE IF NOT EXISTS locations (id INTEGER PRIMARY KEY AUTOINCREMENT,
     latitude REAL NOT NULL,
