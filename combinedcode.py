@@ -282,6 +282,20 @@ for lat, lon in next_coords:
     conn.commit()
     time.sleep(1)
 
+conn = sqlite3.connect("test.db")
+cur = conn.cursor()
+
+cur.execute("SELECT description, COUNT(*) FROM walkscore_results GROUP BY description")
+results = cur.fetchall()
+conn.close()
+total = 0
+for description, count in results:
+    total += count
+with open("walkscoreoutputs.txt", "w") as f:
+    f.write(f"Total locations: {total}\n\n")
+    for description, count in results:
+        f.write(f"{description}: {count}\n")
+
 # DANIEL SQL CODE
 
 db_name = "test.db"
