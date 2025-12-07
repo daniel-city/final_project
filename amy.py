@@ -100,3 +100,61 @@ def get_top_cities_aqi():
         if data is None:
             print("  Failed to get data for:", name)
             continue
+
+        raw_json_data.append({
+            "city": name,
+            "country": city["country"],
+            "lat": city["lat"],
+            "lon": city["lon"],
+            "api_response": data
+        })
+
+        with open(raw_json_file, "w") as f:
+            json.dump(raw_json_data, f, indent=2)
+
+        # Insert city
+        cur.execute("""
+            INSERT OR IGNORE INTO Cities (name, country, lat, lon)
+            VALUES (?, ?, ?, ?)
+        """, (name, city["country"], city["lat"], city["lon"]))
+        conn.commit()
+
+        cur.execute("SELECT id FROM Cities WHERE name = ?", (name,))
+        city_id = cur.fetchone()[0]
+
+        #pollutants
+        d = data.get("data", {})
+        iaqi = d.get("iaqi", {})
+
+        def val(key):
+            if key in iaqi and isinstance(iaqi[key], dict):
+                return iaqi[key].get("v")
+            return None
+        
+        #insert AQI
+        cur.execute("""
+            INSERT INTO AQIReadings (
+                city_id, aqi, dominentpol, time_utc,
+                pm25, pm10, o3, no2, so2, co, raw_json
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            city_id,
+            d.get("aqi"),
+            d.get("dominentpol"),
+            d.get("time", {}).get("iso"),
+            val("pm25"),
+            val("pm10"),
+            val("o3"),
+            val("no2"),
+            val("so2"),
+            val("co"),
+            json.dumps(data)
+        ))
+
+        conn.commit()
+        added += 1
+        existing_cities.add(name)
+        print("  Added AQI for:", name)
+
+    print("Finished batch:", added, "new cities.")
+    conn.close()
