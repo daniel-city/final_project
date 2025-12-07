@@ -68,3 +68,35 @@ def fetch_aqi(lat, lon):
         return data
     except:
         return None
+    
+def get_top_cities_aqi():
+    cities = load_top_cities()
+    conn, cur, init_db()
+
+    if os.path.exists(raw_json_file):
+        try:
+            with open(raw_json_file, "r") as f:
+                raw_json_data = json.load(f)
+        except:
+            raw_json_data = []
+    else:
+        raw_json_data = []
+
+    cur.execute("SELECT name FROM Cities")
+    existing_cities = set(row[0] for row in cur.fetchall())
+
+    added = 0
+
+    for city in cities:
+        if added >= batch_size:
+            break
+        name = city["name"]
+        if name in existing_cities:
+            continue
+
+        print("Getting AQI for:", name)
+        data = fetch_aqi(city["lat"], city["lon"])
+
+        if data is None:
+            print("  Failed to get data for:", name)
+            continue
