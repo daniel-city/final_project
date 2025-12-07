@@ -2,10 +2,10 @@
     {
         "flowSegmentData": {
             "frc": "FRC3",
-            "currentSpeed": 34,
-            "freeFlowSpeed": 34,
-            "currentTravelTime": 134,
-            "freeFlowTravelTime": 134,
+            "currentSpeed": 29,
+            "freeFlowSpeed": 35,
+            "currentTravelTime": 158,
+            "freeFlowTravelTime": 131,
             "confidence": 1,
             "roadClosure": false,
             "coordinates": {
@@ -356,9 +356,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 12,
+            "currentSpeed": 13,
             "freeFlowSpeed": 19,
-            "currentTravelTime": 336,
+            "currentTravelTime": 310,
             "freeFlowTravelTime": 212,
             "confidence": 1,
             "roadClosure": false,
