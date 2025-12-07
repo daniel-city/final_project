@@ -29,25 +29,21 @@ def get_walkscore(lat, lon):
         print("ERROR:", e)
         return None
 
-conn = sqlite3.connect("walkscore.db")
+conn = sqlite3.connect("walk_score.db")
 cur = conn.cursor()
-cur.execute("""CREATE TABLE IF NOT EXISTS locations (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+cur.execute("""CREATE TABLE IF NOT EXISTS locations (id INTEGER PRIMARY KEY AUTOINCREMENT,
     latitude REAL NOT NULL,
     longitude REAL NOT NULL,
-    UNIQUE(latitude, longitude)
-);""")
+    UNIQUE(latitude, longitude));""")
 
-cur.execute("""CREATE TABLE IF NOT EXISTS walkscore_results (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+cur.execute("""CREATE TABLE IF NOT EXISTS walkscore_results (id INTEGER PRIMARY KEY AUTOINCREMENT,
     location_id INTEGER NOT NULL,
     walkscore INTEGER,
     description TEXT,
     transit_score INTEGER,
     bike_score INTEGER,
     UNIQUE(location_id),
-    FOREIGN KEY(location_id) REFERENCES locations(id)
-);""")
+    FOREIGN KEY(location_id) REFERENCES locations(id));""")
 
 conn.commit()
 
@@ -76,17 +72,9 @@ for lat, lon in coords:
         continue
 
     cur.execute("""INSERT INTO walkscore_results (
-        location_id, walkscore, description, transit_score, bike_score
-    ) VALUES (?, ?, ?, ?, ?)""", (
-        location_id,
-        data.get("walkscore"),
-        data.get("description"),
-        data.get("transit", {}).get("score"),
-        data.get("bike", {}).get("score"),
-    ))
+        location_id, walkscore, description, transit_score, bike_score) VALUES (?, ?, ?, ?, ?)""", (location_id, data.get("walkscore"), data.get("description"), data.get("transit", {}).get("score"), data.get("bike", {}).get("score"),))
     conn.commit()
     print(f"Stored WalkScore for {lat}, {lon}: {data.get('walkscore')}")
     time.sleep(1)
 
 conn.close()
-print("Script finished successfully.")
