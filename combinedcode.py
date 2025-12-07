@@ -300,8 +300,8 @@ current_speed INTEGER,
 freeflow_speed INTEGER,
 current_travel_time INTEGER,
 freeflow_travel_time INTEGER,
-latitude FLOAT,
-longitude FLOAT
+coordinates_id INTEGER NOT NULL,
+FOREIGN KEY (coordinates_id) REFERENCES locations(id)
 )
 """)
 counter = 0
@@ -312,12 +312,23 @@ for location in json_data:
     freeflow_speed = location["flowSegmentData"]["freeFlowSpeed"]
     current_travel_time = location["flowSegmentData"]["currentTravelTime"]
     freeflow_travel_time = location["flowSegmentData"]["freeFlowTravelTime"]
-    latitude = coordinate_points[counter][:9]
-    longitude = coordinate_points[counter][10:]
-    counter += 1
+    latitude = coordinate_points[counter][:7]
+    longitude = coordinate_points[counter][8:]
+
     cur.execute("""
-    INSERT OR IGNORE INTO DanTrafficFlow (current_speed, freeflow_speed, current_travel_time, freeflow_travel_time, latitude, longitude)
-    VALUES (?, ?, ?, ?, ?, ?) """, (current_speed, freeflow_speed, current_travel_time, freeflow_travel_time, latitude, longitude))
+
+    SELECT id FROM locations WHERE latitude = ? AND longitude = ?
+    """, (latitude, longitude))
+    coordinates_id = cur.fetchone()
+
+    if coordinates_id:
+        coordinates_id = coordinates_id[0]
+    
+        cur.execute("""
+        INSERT OR IGNORE INTO DanTrafficFlow (current_speed, freeflow_speed, current_travel_time, freeflow_travel_time, coordinates_id)
+        VALUES (?, ?, ?, ?, ?) """, (current_speed, freeflow_speed, current_travel_time, freeflow_travel_time, coordinates_id))
+
+    counter += 1
 
 # conn.commit()
 
