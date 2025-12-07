@@ -1,0 +1,5 @@
+Total locations: 49
+
+Somewhat Walkable: 1
+Very Walkable: 13
+Walker's Paradise: 35
