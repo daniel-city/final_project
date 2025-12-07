@@ -54,3 +54,17 @@ def init_db():
 
     conn.commit()
     return conn, cur
+
+def fetch_aqi(lat, lon):
+    url = f"https://api.waqi.info/feed/geo:{lat};{lon}/"
+    params = {"token": API_KEY}
+
+    try:
+        response = requests.get(url, params=params)
+        data = response.json()
+
+        if data.get("status") != "ok":
+            return None
+        return data
+    except:
+        return None
