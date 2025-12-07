@@ -2,9 +2,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC3",
-            "currentSpeed": 28,
+            "currentSpeed": 34,
             "freeFlowSpeed": 34,
-            "currentTravelTime": 163,
+            "currentTravelTime": 134,
             "freeFlowTravelTime": 134,
             "confidence": 1,
             "roadClosure": false,
@@ -352,5 +352,118 @@
             "@version": "4"
         },
         "coordinates input": "43.281735,-83.739992"
+    },
+    {
+        "flowSegmentData": {
+            "frc": "FRC4",
+            "currentSpeed": 12,
+            "freeFlowSpeed": 19,
+            "currentTravelTime": 336,
+            "freeFlowTravelTime": 212,
+            "confidence": 1,
+            "roadClosure": false,
+            "coordinates": {
+                "coordinate": [
+                    {
+                        "latitude": 40.767240869656234,
+                        "longitude": -73.98621848178706
+                    },
+                    {
+                        "latitude": 40.766619950323836,
+                        "longitude": -73.98665970517011
+                    },
+                    {
+                        "latitude": 40.76624438685274,
+                        "longitude": -73.9869332904897
+                    },
+                    {
+                        "latitude": 40.76598156733986,
+                        "longitude": -73.9871250684343
+                    },
+                    {
+                        "latitude": 40.765835365600566,
+                        "longitude": -73.98722833348141
+                    },
+                    {
+                        "latitude": 40.765351240654205,
+                        "longitude": -73.9875716562354
+                    },
+                    {
+                        "latitude": 40.76473569983137,
+                        "longitude": -73.98802629066353
+                    },
+                    {
+                        "latitude": 40.764112027242604,
+                        "longitude": -73.9884715373601
+                    },
+                    {
+                        "latitude": 40.76349247535749,
+                        "longitude": -73.98892751289273
+                    },
+                    {
+                        "latitude": 40.763238977363265,
+                        "longitude": -73.98911526752383
+                    },
+                    {
+                        "latitude": 40.7628581254413,
+                        "longitude": -73.98939421726143
+                    },
+                    {
+                        "latitude": 40.762365916015625,
+                        "longitude": -73.98976704431459
+                    },
+                    {
+                        "latitude": 40.76223856186759,
+                        "longitude": -73.98986360383914
+                    },
+                    {
+                        "latitude": 40.7616162625661,
+                        "longitude": -73.9903195793718
+                    },
+                    {
+                        "latitude": 40.760996687416444,
+                        "longitude": -73.99077287269542
+                    },
+                    {
+                        "latitude": 40.76079416083069,
+                        "longitude": -73.99091637087776
+                    },
+                    {
+                        "latitude": 40.760347584354285,
+                        "longitude": -73.99123153043706
+                    },
+                    {
+                        "latitude": 40.76007401192596,
+                        "longitude": -73.99143001390422
+                    },
+                    {
+                        "latitude": 40.759731997190414,
+                        "longitude": -73.99167543602914
+                    },
+                    {
+                        "latitude": 40.75949734117671,
+                        "longitude": -73.99184843851064
+                    },
+                    {
+                        "latitude": 40.759105738062345,
+                        "longitude": -73.99213275266628
+                    },
+                    {
+                        "latitude": 40.75893406178038,
+                        "longitude": -73.99225211096747
+                    },
+                    {
+                        "latitude": 40.75871006927828,
+                        "longitude": -73.99240902019488
+                    },
+                    {
+                        "latitude": 40.75841103049282,
+                        "longitude": -73.99261689139357
+                    }
+                ]
+            },
+            "@version": "4"
+        },
+        "coordinates input": "40.762315,-73.990162"
     }
 ]
