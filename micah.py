@@ -107,7 +107,7 @@ def get_walkscore(lat, lon):
         print("ERROR:", e)
         return None
 
-conn = sqlite3.connect("test.db")
+conn = sqlite3.connect("walkscore.db")
 cur = conn.cursor()
 cur.execute("""CREATE TABLE IF NOT EXISTS locations (id INTEGER PRIMARY KEY AUTOINCREMENT,
     latitude REAL NOT NULL,
@@ -152,3 +152,17 @@ for lat, lon in next_coords:
     time.sleep(1)
 
 conn.close()
+
+conn = sqlite3.connect("test.db")
+cur = conn.cursor()
+
+cur.execute("SELECT description, COUNT(*) FROM walkscore_results GROUP BY description")
+results = cur.fetchall()
+conn.close()
+total = 0
+for description, count in results:
+    total += count
+with open("walkscoreoutputs.txt", "w") as f:
+    f.write(f"Total locations: {total}\n\n")
+    for description, count in results:
+        f.write(f"{description}: {count}\n")
