@@ -170,8 +170,13 @@ for coordinate in coordinate_points:
     else:
         print(f"Error:  + {response.status_code}")
 
+#MAYBE REMOVE
+
 with open("traffic_flow_data.json", "w") as f:
     json.dump(one_hundred_data, f, indent=4)
+
+
+
 
 full_path = os.path.join(os.path.dirname(__file__), "traffic_flow_data.json")
 f = open(full_path)
@@ -296,10 +301,14 @@ path = os.path.dirname(os.path.abspath(__file__))
 conn = sqlite3.connect(path + "/" + db_name)
 cur = conn.cursor()
 
+
+#maybe remove
 cur.execute("""
 DROP TABLE IF EXISTS DanTrafficFlow
 """)
 conn.commit()
+
+
 cur.execute("""
 CREATE TABLE IF NOT EXISTS DanTrafficFlow (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -307,35 +316,40 @@ current_speed INTEGER,
 freeflow_speed INTEGER,
 current_travel_time INTEGER,
 freeflow_travel_time INTEGER,
-coordinates_id INTEGER NOT NULL,
-FOREIGN KEY (coordinates_id) REFERENCES locations(id)
+location_id INTEGER NOT NULL,
+FOREIGN KEY (location_id) REFERENCES locations(id)
 )
 """)
 conn.commit()
 
 counter = 0
 
+# rows_inserted = 0
+# maximum_rows = 25
+
 for location in json_data:
+    # if rows_inserted >= maximum_rows:
+    #     break
     current_speed = location["flowSegmentData"]["currentSpeed"]
     #print(current_speed)
     freeflow_speed = location["flowSegmentData"]["freeFlowSpeed"]
     current_travel_time = location["flowSegmentData"]["currentTravelTime"]
     freeflow_travel_time = location["flowSegmentData"]["freeFlowTravelTime"]
-    latitude = coordinate_points[counter][:7]
-    longitude = coordinate_points[counter][8:]
+    latitude, longitude = coordinate_points[counter].split(",")
 
     cur.execute("""
 
     SELECT id FROM locations WHERE latitude = ? AND longitude = ?
     """, (latitude, longitude))
-    coordinates_id = cur.fetchone()
+    location_id = cur.fetchone()
 
-    if coordinates_id:
-        coordinates_id = coordinates_id[0]
+    if location_id:
+        location_id = location_id[0]
     
         cur.execute("""
-        INSERT OR IGNORE INTO DanTrafficFlow (current_speed, freeflow_speed, current_travel_time, freeflow_travel_time, coordinates_id)
-        VALUES (?, ?, ?, ?, ?) """, (current_speed, freeflow_speed, current_travel_time, freeflow_travel_time, coordinates_id))
+        INSERT OR IGNORE INTO DanTrafficFlow (current_speed, freeflow_speed, current_travel_time, freeflow_travel_time, location_id)
+        VALUES (?, ?, ?, ?, ?) """, (current_speed, freeflow_speed, current_travel_time, freeflow_travel_time, location_id))
+        # rows_inserted += 1
 
     counter += 1
 
@@ -662,7 +676,7 @@ def traffic_aqi_relationship():
     SELECT aqi.aqi, tf.current_speed, tf.freeflow_speed
     FROM aqi_results aqi
     JOIN locations loc ON aqi.location_id = loc.id
-    JOIN DanTrafficFlow tf ON tf.coordinates_id = loc.id
+    JOIN DanTrafficFlow tf ON tf.location_id = loc.id
     """)
 
     rows = cur.fetchall()
