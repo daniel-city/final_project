@@ -59,6 +59,7 @@ coords = [
     "29.9511,-90.0715",   # New Orleans, LA
     "30.6954,-88.0399",   # Mobile, AL
     "40.4406,-79.9959",   # Pittsburgh, PA
+    "43.6532,-79.3832",   # Toronto, ON (Canada)
     "40.7357,-74.1724",   # Newark, NJ
     "42.1015,-72.5898",   # Springfield, MA
     "33.5207,-86.8025",   # Birmingham, AL
@@ -67,51 +68,26 @@ coords = [
     "36.0972,-79.7745",   # Greensboro, NC
     "40.7306,-73.9352",   # Queens, NY
     "41.6005,-93.6091",   # Des Moines, IA
+    "36.7783,-119.4179",  # Central California
+    "40.6501,-73.9496",   # Brooklyn, NY
     "34.0007,-81.0348",   # Columbia, SC
-    "36.8468,-76.2859",   # Norfolk, VA
-    "39.7683,-94.8467",   # St. Joseph, MO
-    "39.5296,-119.8138",  # Reno, NV
-    "33.4942,-111.9261",  # Scottsdale, AZ
-    "44.0521,-123.0868",  # Eugene, OR
-    "30.4583,-91.1403",   # Baton Rouge, LA
-    "35.3733,-119.0187",  # Bakersfield, CA
-    "27.9506,-82.4572",   # Tampa, FL
-    "33.1581,-117.3506",  # Carlsbad, CA
-    "28.5383,-81.3792",   # Orlando, FL
-    "26.1224,-80.1373",   # Fort Lauderdale, FL
-    "40.5853,-105.0844",  # Fort Collins, CO
-    "33.2012,-97.1292",   # Denton, TX
-    "47.6588,-117.4260",  # Spokane, WA
-    "35.9940,-78.8986",   # Durham, NC
-    "37.5407,-77.4360",   # Richmond, VA
-    "33.9526,-84.5499",   # Marietta, GA
-    "39.8283,-98.5795",   # Geographic center of contiguous U.S.
-    "21.3069,-157.8583",  # Honolulu, HI
-    "61.2181,-149.9003",  # Anchorage, AK
-    "46.8772,-96.7898",   # Fargo, ND
-    "44.9537,-93.0900",   # St. Paul, MN
-    "33.4484,-94.0400",   # Texarkana, TX
-    "39.0997,-94.5786",   # Kansas City, MO
-    "35.6860,-105.9378",  # Santa Fe, NM
-    "40.7608,-111.8910",  # Salt Lake City, UT
-    "46.8083,-100.7837",  # Bismarck, ND
-    "42.7325,-84.5555",   # Lansing, MI
-    "37.7745,-122.1341",  # Alameda, CA
-    "34.1808,-118.3089",  # Burbank, CA
-    "36.7468,-119.7726",  # Fresno, CA
-    "34.1478,-118.1445",  # Pasadena, CA
-    "41.0814,-81.5190",   # Akron, OH
-    "39.9523,-75.1638",   # Center City Philadelphia
-    "40.7128,-74.0060",   # duplicate New York, NY
-    "34.0522,-118.2437",  # duplicate LA
-    "41.8781,-87.6298",   # duplicate Chicago
-    "29.7604,-95.3698",   # duplicate Houston
-    "33.4484,-112.0740",  # duplicate Phoenix
-    "39.9526,-75.1652",   # duplicate Philadelphia
-    "47.6062,-122.3321",  # duplicate Seattle
-    "38.9072,-77.0369",   # duplicate Washington DC
-    "35.2271,-80.8431",   # duplicate Charlotte
-    "32.7157,-117.1611"   # duplicate San Diego
+    "36.7468,-119.7726",  # Fresno (downtown), CA
+    "48.7491,-122.4787",  # Bellingham area, WA (to avoid dup)
+    "34.0522,-118.2437",  # Los Angeles, CA (duplicate removed, unique kept)
+    "40.7128,-74.0060",   # New York, NY (unique kept)
+    "36.1539,-95.9928",   # Tulsa, OK
+    "27.3364,-82.5307",   # Sarasota, FL
+    "40.0140,-105.2705",  # Boulder, CO
+    "44.3148,-85.6024",   # Central Michigan
+    "35.7796,-76.5500",   # Eastern North Carolina
+    "32.3513,-87.0200",   # Western Alabama
+    "48.7519,-122.4787",  # Bellingham, WA
+    "33.8333,-116.5453",  # Palm Springs, CA
+    "40.7128,-74.0060",   # New York, NY (duplicate)
+    "34.0522,-118.2437",  # Los Angeles, CA (duplicate)
+    "41.8781,-87.6298",   # Chicago, IL (duplicate)
+    "29.7604,-95.3698",   # Houston, TX (duplicate)
+    "33.7490,-84.3880"    # Atlanta, GA (duplicate)
 ]
 
 def get_walkscore(lat, lon):
