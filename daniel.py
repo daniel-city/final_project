@@ -218,3 +218,8 @@ for row in rows_coordinates:
 
 conn.commit()
 conn.close()
+
+with open("outputs.txt", "a") as file:
+    f.write(f"Overall combined score for Walkscore and Traffic Flow. The higher the score, the more cars/car dependent the location is")
+    for key, value in final_coordinates_dict.items():
+        f.write(f"Overall combined score for {key}: {value}")
