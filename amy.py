@@ -104,48 +104,40 @@ coordinates = [
     '40.7128,-74.0060'     # New York, NY (duplicate)
 ]
 
-def load_top_cities():
-    if not os.path.exists(top_cities_file):
-        raise FileNotFoundError(f"{top_cities_file} not found.")
-    with open(top_cities_file, "r") as f:
-        return json.load(f)
-    
-
 def init_db():
     conn = sqlite3.connect(db_file)
     cur = conn.cursor()
 
     #cities table
     cur.execute("""
-    CREATE TABLE IF NOT EXISTS Cities (
+    CREATE TABLE IF NOT EXISTS aqi_locations (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT UNIQUE,
-        country TEXT,
-        lat REAL,
-        lon REAL
-    )
+        latitude REAL NOT NULL,
+        longitude REAL NOT NULL,
+        UNIQUE(latitude, longitude)
+    );
     """)
 
-    #AQI readings table
     cur.execute("""
-        CREATE TABLE IF NOT EXISTS AQIReadings (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            city_id INTEGER,
-            aqi INTEGER,
-            dominentpol TEXT,
-            time_utc TEXT,
-            pm25 REAL,
-            pm10 REAL,
-            o3 REAL,
-            no2 REAL,
-            so2 REAL,
-            co REAL,
-            raw_json TEXT,
-            FOREIGN KEY(city_id) REFERENCES Cities(id)
-        )
+    CREATE TABLE IF NOT EXISTS aqi_results (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        location_id INTEGER NOT NULL,
+        aqi INTEGER,
+        dominentpol TEXT,
+        time_utc TEXT,
+        pm25 REAL,
+        pm10 REAL,
+        o3 REAL,
+        no2 REAL,
+        so2 REAL,
+        co REAL,
+        raw_json TEXT,
+        FOREIGN KEY(location_id) REFERENCES aqi_locations(id)
+    );
     """)
 
     conn.commit()
+
     return conn, cur
 
 def fetch_aqi(lat, lon):
@@ -163,7 +155,7 @@ def fetch_aqi(lat, lon):
         return None
     
 def get_top_cities_aqi():
-    conn, cur, init_db()
+    conn, cur = init_db()
 
     if os.path.exists(raw_json_file):
         try:
@@ -177,21 +169,24 @@ def get_top_cities_aqi():
     cur.execute("SELECT COUNT(*) FROM aqi_results")
     completed = cur.fetchone()[0]
 
-    next_coords = coords[completed: completed + batch_size]
+    next_coords = coordinates[completed: completed + batch_size]
 
     added = 0
 
-    for lat, lon in next_coords:
+    for coord in next_coords:
+        lat_str, lon_str = coord.split(',')
+        lat = float(lat_str)
+        lon = float(lon_str)
         print("Getting AQI for:", lat, lon)
          
-        cur.executre("""
-            INSERT OR IGNORE INTO locations (latitude, longitude)
+        cur.execute("""
+            INSERT OR IGNORE INTO aqi_locations (latitude, longitude)
             VALUES (?, ?)
         """, (lat, lon))
         conn.commit()
 
         cur.execute("""
-            SELECT id FROM locations
+            SELECT id FROM aqi_locations
             WHERE latitude = ? AND longitude = ?
         """, (lat, lon))
         loc_row = cur.fetchone()
@@ -201,7 +196,7 @@ def get_top_cities_aqi():
 
         loc_id = loc_row[0]
 
-        cur.execute("SELECT 1 FROM aqi_results WHERE location_id = ?", (loc_id,)
+        cur.execute("SELECT 1 FROM aqi_results WHERE location_id = ?", (loc_id,))
         if cur.fetchone():
             print("  AQI already exists for this location.")
             continue
@@ -215,7 +210,7 @@ def get_top_cities_aqi():
             "latitude": lat,
             "longitude": lon,
             "api_response": data
-        }
+        })
 
         with open(raw_json_file, "w") as f:
             json.dump(raw_json_data, f, indent=2)
@@ -234,7 +229,7 @@ def get_top_cities_aqi():
                 pm25, pm10, o3, no2, so2, co, raw_json
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
-            location_id,
+            loc_id,
             d.get("aqi"),
             d.get("dominentpol"),
             d.get("time", {}).get("iso"),
@@ -288,3 +283,15 @@ def calculate_num_category_aq():
         summary[category]["count"] += 1
 
     return summary
+
+def main():
+    print("Collecting AQI data (next 25 coords)...")
+    get_top_cities_aqi()
+
+    print("\nAQI Category Summary:")
+    summary = calculate_num_category_aq()
+    print(json.dumps(summary, indent=2))
+
+
+if __name__ == "__main__":
+    main()
