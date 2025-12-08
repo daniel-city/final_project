@@ -160,7 +160,7 @@ def get_coords(conn, coords):
         time.sleep(1)
 
 
-def num_description(conn):
+def num_description_and_visual(conn):
     cur = conn.cursor()
     cur.execute("SELECT description, COUNT(*) FROM walkscore_results GROUP BY description")
     results = cur.fetchall()
@@ -191,7 +191,7 @@ def main():
     conn = sqlite3.connect("test.db")
     create_SQL(conn)
     get_coords(conn, coordinate_points)
-    results = num_description(conn)
+    results = num_description_and_visual(conn)
     conn.close()
     calc_and_write(results)
 
