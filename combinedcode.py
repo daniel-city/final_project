@@ -393,6 +393,16 @@ def init_db():
     cur = conn.cursor()
 
     cur.execute("""
+    CREATE TABLE IF NOT EXISTS locations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    latitude REAL NOT NULL,
+    longitude REAL NOT NULL,
+    UNIQUE(latitude, longitude)
+    );
+    """)
+
+
+    cur.execute("""
     CREATE TABLE IF NOT EXISTS aqi_results (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         location_id INTEGER NOT NULL,
