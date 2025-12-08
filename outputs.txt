@@ -4,3 +4,6 @@ Car-Dependent: 6
 Somewhat Walkable: 3
 Very Walkable: 23
 Walker's Paradise: 43
+Overall combined score for Walkscore and Traffic Flow. The higher the score, the more cars/car dependent the location is
+
+Traffic Congestion vs AQI Category:

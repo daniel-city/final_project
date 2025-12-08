@@ -612,7 +612,7 @@ print(len(final_coordinates_dict))
 
 conn.commit()
 
-with open("outputs.txt", "a") as file:
+with open("outputs.txt", "a") as f:
     f.write(f"Overall combined score for Walkscore and Traffic Flow. The higher the score, the more cars/car dependent the location is")
     for key, value in final_coordinates_dict.items():
         f.write(f"Overall combined score for {key}: {value}")
@@ -622,9 +622,12 @@ def traffic_aqi_relationship():
     cur = conn.cursor()
 
     cur.execute("""
-        SELECT aqi.aqi, tf.current_speed, tf.freeflow_speed FROM aqi_results aqi
-                JOIN DanTrafficFlow tf ON aqi.location_id + tf.coordinates_id
+    SELECT aqi.aqi, tf.current_speed, tf.freeflow_speed
+    FROM aqi_results aqi
+    JOIN locations loc ON aqi.location_id = loc.id
+    JOIN DanTrafficFlow tf ON tf.coordinates_id = loc.id
     """)
+
     rows = cur.fetchall()
     conn.close()
 
@@ -657,3 +660,21 @@ with open("outputs.txt", "a") as f:
     f.write("\n\nTraffic Congestion vs AQI Category:\n")
     for category, stats in traffic_vs_aqi.items():
         f.write(f"{category}: Average Congestion = {stats['avg_congestion']}, Count = {stats['count']}\n")
+
+def visualize_traffic_vs_aqi(traffic_vs_aqi):
+    categories = list(traffic_vs_aqi.keys())
+    avg_congestion = [traffic_vs_aqi[c]["avg_congestion"] for c in categories]
+    
+    plt.figure(figsize=(10, 6))
+    plt.bar(categories, avg_congestion)
+    
+    plt.xlabel("AQI Category")
+    plt.ylabel("Average Traffic Congestion\n(freeflow_speed - current_speed)")
+    plt.title("Average Traffic Congestion by AQI Category")
+    plt.tight_layout()
+    plt.savefig("traffic_vs_aqi.png")
+    plt.show()
+    plt.close()
+
+print("ABOUT TO DRAW GRAPH!!!!")
+visualize_traffic_vs_aqi(traffic_vs_aqi)
