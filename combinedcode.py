@@ -205,8 +205,8 @@ def num_description(conn):
 
 
 def calc_and_write(results):
-    total = sum(count for _, count in results)
-    with open("walkscoreoutputs.txt", "w") as f:
+    total = sum(count for category1, count in results)
+    with open("outputs.txt", "w") as f:
         f.write(f"Total locations: {total}\n\n")
         for description, count in results:
             f.write(f"{description}: {count}\n")
@@ -472,6 +472,31 @@ def calculate_num_category_aq():
         summary[category]["count"] += 1
 
     return summary
+
+# Calculation for Micah and Amy APIs
+
+def walkscore_per_aqi():
+    conn = sqlite3.connect("test.db")
+    cur = conn.cursor()
+    cur.execute("""SELECT aqi.aqi, ws.description FROM aqi_results aqi
+        JOIN location_mapping lm ON aqi.location_id = lm.aqi_location_id
+        JOIN walkscore_results ws ON ws.location_id = lm.location_id""")
+    rows = cur.fetchall()
+    conn.close()
+
+    total_wp = {}
+    walkers_paradise_counts = {}
+
+    for aqi, description in rows:
+        category1 = aqi_category(aqi)
+        total_wp[category1] = total_wp.get(category1, 0) + 1
+        if description == "Walkers Paradise":
+            walkers_paradise_counts[category1] = walkers_paradise_counts.get(category1, 0) + 1
+    rates = {}
+    for category, total in total_wp.items():
+        wp_count = walkers_paradise_counts.get(category, 0)
+        rates[category] = wp_count / total if total > 0 else 0
+    return rates
 
 def main():
     print("Collecting AQI data (next 25 coords)...")
