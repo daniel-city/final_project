@@ -55,9 +55,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 17,
+            "currentSpeed": 19,
             "freeFlowSpeed": 28,
-            "currentTravelTime": 259,
+            "currentTravelTime": 232,
             "freeFlowTravelTime": 157,
             "confidence": 1,
             "roadClosure": false,
@@ -280,9 +280,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 10,
+            "currentSpeed": 13,
             "freeFlowSpeed": 17,
-            "currentTravelTime": 139,
+            "currentTravelTime": 107,
             "freeFlowTravelTime": 82,
             "confidence": 1,
             "roadClosure": false,
@@ -333,9 +333,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 13,
+            "currentSpeed": 17,
             "freeFlowSpeed": 17,
-            "currentTravelTime": 83,
+            "currentTravelTime": 63,
             "freeFlowTravelTime": 63,
             "confidence": 1,
             "roadClosure": false,
@@ -512,9 +512,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 15,
+            "currentSpeed": 23,
             "freeFlowSpeed": 23,
-            "currentTravelTime": 34,
+            "currentTravelTime": 22,
             "freeFlowTravelTime": 22,
             "confidence": 1,
             "roadClosure": false,
@@ -577,9 +577,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 13,
+            "currentSpeed": 17,
             "freeFlowSpeed": 17,
-            "currentTravelTime": 141,
+            "currentTravelTime": 108,
             "freeFlowTravelTime": 108,
             "confidence": 1,
             "roadClosure": false,
@@ -1063,10 +1063,10 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 20,
-            "freeFlowSpeed": 26,
-            "currentTravelTime": 137,
-            "freeFlowTravelTime": 105,
+            "currentSpeed": 17,
+            "freeFlowSpeed": 27,
+            "currentTravelTime": 161,
+            "freeFlowTravelTime": 101,
             "confidence": 1,
             "roadClosure": false,
             "coordinates": {
@@ -1225,9 +1225,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC2",
-            "currentSpeed": 38,
+            "currentSpeed": 59,
             "freeFlowSpeed": 59,
-            "currentTravelTime": 11,
+            "currentTravelTime": 7,
             "freeFlowTravelTime": 7,
             "confidence": 1,
             "roadClosure": false,
@@ -1315,10 +1315,10 @@
     {
         "flowSegmentData": {
             "frc": "FRC2",
-            "currentSpeed": 29,
-            "freeFlowSpeed": 32,
-            "currentTravelTime": 113,
-            "freeFlowTravelTime": 102,
+            "currentSpeed": 33,
+            "freeFlowSpeed": 33,
+            "currentTravelTime": 99,
+            "freeFlowTravelTime": 99,
             "confidence": 1,
             "roadClosure": false,
             "coordinates": {
@@ -1557,10 +1557,10 @@
     {
         "flowSegmentData": {
             "frc": "FRC1",
-            "currentSpeed": 11,
-            "freeFlowSpeed": 14,
-            "currentTravelTime": 85,
-            "freeFlowTravelTime": 67,
+            "currentSpeed": 7,
+            "freeFlowSpeed": 13,
+            "currentTravelTime": 134,
+            "freeFlowTravelTime": 72,
             "confidence": 1,
             "roadClosure": false,
             "coordinates": {
@@ -1775,9 +1775,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 8,
+            "currentSpeed": 10,
             "freeFlowSpeed": 14,
-            "currentTravelTime": 88,
+            "currentTravelTime": 70,
             "freeFlowTravelTime": 50,
             "confidence": 1,
             "roadClosure": false,
@@ -2953,9 +2953,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC3",
-            "currentSpeed": 23,
+            "currentSpeed": 10,
             "freeFlowSpeed": 23,
-            "currentTravelTime": 97,
+            "currentTravelTime": 224,
             "freeFlowTravelTime": 97,
             "confidence": 1,
             "roadClosure": false,
@@ -3174,10 +3174,10 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 13,
-            "freeFlowSpeed": 19,
-            "currentTravelTime": 35,
-            "freeFlowTravelTime": 24,
+            "currentSpeed": 8,
+            "freeFlowSpeed": 21,
+            "currentTravelTime": 58,
+            "freeFlowTravelTime": 22,
             "confidence": 1,
             "roadClosure": false,
             "coordinates": {
@@ -3231,11 +3231,11 @@
     {
         "flowSegmentData": {
             "frc": "FRC3",
-            "currentSpeed": 40,
-            "freeFlowSpeed": 40,
-            "currentTravelTime": 118,
-            "freeFlowTravelTime": 118,
-            "confidence": 1,
+            "currentSpeed": 23,
+            "freeFlowSpeed": 41,
+            "currentTravelTime": 205,
+            "freeFlowTravelTime": 115,
+            "confidence": 0.991842,
             "roadClosure": false,
             "coordinates": {
                 "coordinate": [
@@ -3368,9 +3368,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 5,
+            "currentSpeed": 10,
             "freeFlowSpeed": 10,
-            "currentTravelTime": 120,
+            "currentTravelTime": 60,
             "freeFlowTravelTime": 60,
             "confidence": 1,
             "roadClosure": false,
@@ -3566,9 +3566,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 18,
+            "currentSpeed": 19,
             "freeFlowSpeed": 23,
-            "currentTravelTime": 136,
+            "currentTravelTime": 129,
             "freeFlowTravelTime": 106,
             "confidence": 1,
             "roadClosure": false,
@@ -3925,11 +3925,11 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 13,
-            "freeFlowSpeed": 19,
-            "currentTravelTime": 100,
-            "freeFlowTravelTime": 68,
-            "confidence": 1,
+            "currentSpeed": 14,
+            "freeFlowSpeed": 18,
+            "currentTravelTime": 93,
+            "freeFlowTravelTime": 72,
+            "confidence": 0.98,
             "roadClosure": false,
             "coordinates": {
                 "coordinate": [
@@ -3990,10 +3990,10 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 33,
-            "freeFlowSpeed": 33,
-            "currentTravelTime": 92,
-            "freeFlowTravelTime": 92,
+            "currentSpeed": 26,
+            "freeFlowSpeed": 32,
+            "currentTravelTime": 117,
+            "freeFlowTravelTime": 95,
             "confidence": 1,
             "roadClosure": false,
             "coordinates": {
@@ -4067,9 +4067,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 13,
+            "currentSpeed": 14,
             "freeFlowSpeed": 17,
-            "currentTravelTime": 274,
+            "currentTravelTime": 255,
             "freeFlowTravelTime": 210,
             "confidence": 1,
             "roadClosure": false,
@@ -4318,11 +4318,11 @@
     {
         "flowSegmentData": {
             "frc": "FRC2",
-            "currentSpeed": 9,
+            "currentSpeed": 15,
             "freeFlowSpeed": 15,
-            "currentTravelTime": 43,
+            "currentTravelTime": 26,
             "freeFlowTravelTime": 26,
-            "confidence": 0.99,
+            "confidence": 1,
             "roadClosure": false,
             "coordinates": {
                 "coordinate": [
@@ -4363,11 +4363,11 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 25,
+            "currentSpeed": 23,
             "freeFlowSpeed": 30,
-            "currentTravelTime": 182,
+            "currentTravelTime": 198,
             "freeFlowTravelTime": 151,
-            "confidence": 0.968659,
+            "confidence": 0.972336,
             "roadClosure": false,
             "coordinates": {
                 "coordinate": [
@@ -4564,9 +4564,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 32,
+            "currentSpeed": 42,
             "freeFlowSpeed": 42,
-            "currentTravelTime": 27,
+            "currentTravelTime": 20,
             "freeFlowTravelTime": 20,
             "confidence": 1,
             "roadClosure": false,
@@ -4633,9 +4633,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 11,
+            "currentSpeed": 14,
             "freeFlowSpeed": 26,
-            "currentTravelTime": 190,
+            "currentTravelTime": 149,
             "freeFlowTravelTime": 80,
             "confidence": 1,
             "roadClosure": false,
@@ -4698,11 +4698,11 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 10,
-            "freeFlowSpeed": 24,
-            "currentTravelTime": 114,
-            "freeFlowTravelTime": 47,
-            "confidence": 0.98,
+            "currentSpeed": 23,
+            "freeFlowSpeed": 23,
+            "currentTravelTime": 49,
+            "freeFlowTravelTime": 49,
+            "confidence": 1,
             "roadClosure": false,
             "coordinates": {
                 "coordinate": [
@@ -5117,10 +5117,10 @@
     {
         "flowSegmentData": {
             "frc": "FRC6",
-            "currentSpeed": 2,
-            "freeFlowSpeed": 8,
-            "currentTravelTime": 102,
-            "freeFlowTravelTime": 25,
+            "currentSpeed": 7,
+            "freeFlowSpeed": 7,
+            "currentTravelTime": 29,
+            "freeFlowTravelTime": 29,
             "confidence": 1,
             "roadClosure": false,
             "coordinates": {
@@ -5158,11 +5158,11 @@
     {
         "flowSegmentData": {
             "frc": "FRC3",
-            "currentSpeed": 8,
+            "currentSpeed": 11,
             "freeFlowSpeed": 11,
-            "currentTravelTime": 284,
+            "currentTravelTime": 206,
             "freeFlowTravelTime": 206,
-            "confidence": 0.8295,
+            "confidence": 0.819216,
             "roadClosure": true,
             "coordinates": {
                 "coordinate": [
@@ -5373,10 +5373,10 @@
     {
         "flowSegmentData": {
             "frc": "FRC3",
-            "currentSpeed": 24,
-            "freeFlowSpeed": 35,
-            "currentTravelTime": 114,
-            "freeFlowTravelTime": 78,
+            "currentSpeed": 34,
+            "freeFlowSpeed": 34,
+            "currentTravelTime": 80,
+            "freeFlowTravelTime": 80,
             "confidence": 1,
             "roadClosure": false,
             "coordinates": {
@@ -5474,9 +5474,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 27,
+            "currentSpeed": 21,
             "freeFlowSpeed": 27,
-            "currentTravelTime": 329,
+            "currentTravelTime": 423,
             "freeFlowTravelTime": 329,
             "confidence": 1,
             "roadClosure": false,
@@ -5927,10 +5927,10 @@
     {
         "flowSegmentData": {
             "frc": "FRC1",
-            "currentSpeed": 10,
-            "freeFlowSpeed": 18,
-            "currentTravelTime": 103,
-            "freeFlowTravelTime": 57,
+            "currentSpeed": 6,
+            "freeFlowSpeed": 19,
+            "currentTravelTime": 172,
+            "freeFlowTravelTime": 54,
             "confidence": 1,
             "roadClosure": false,
             "coordinates": {
@@ -6017,9 +6017,9 @@
         "flowSegmentData": {
             "frc": "FRC4",
             "currentSpeed": 21,
-            "freeFlowSpeed": 34,
+            "freeFlowSpeed": 33,
             "currentTravelTime": 349,
-            "freeFlowTravelTime": 215,
+            "freeFlowTravelTime": 222,
             "confidence": 1,
             "roadClosure": false,
             "coordinates": {
@@ -6329,9 +6329,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC2",
-            "currentSpeed": 16,
+            "currentSpeed": 17,
             "freeFlowSpeed": 30,
-            "currentTravelTime": 176,
+            "currentTravelTime": 166,
             "freeFlowTravelTime": 94,
             "confidence": 1,
             "roadClosure": false,
@@ -6647,10 +6647,10 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 32,
-            "freeFlowSpeed": 38,
-            "currentTravelTime": 279,
-            "freeFlowTravelTime": 235,
+            "currentSpeed": 31,
+            "freeFlowSpeed": 39,
+            "currentTravelTime": 288,
+            "freeFlowTravelTime": 229,
             "confidence": 1,
             "roadClosure": false,
             "coordinates": {
@@ -7510,10 +7510,10 @@
     {
         "flowSegmentData": {
             "frc": "FRC2",
-            "currentSpeed": 28,
-            "freeFlowSpeed": 41,
-            "currentTravelTime": 175,
-            "freeFlowTravelTime": 119,
+            "currentSpeed": 30,
+            "freeFlowSpeed": 40,
+            "currentTravelTime": 163,
+            "freeFlowTravelTime": 122,
             "confidence": 1,
             "roadClosure": false,
             "coordinates": {
@@ -7699,11 +7699,11 @@
     {
         "flowSegmentData": {
             "frc": "FRC1",
-            "currentSpeed": 29,
+            "currentSpeed": 26,
             "freeFlowSpeed": 41,
-            "currentTravelTime": 144,
+            "currentTravelTime": 160,
             "freeFlowTravelTime": 101,
-            "confidence": 0.983024,
+            "confidence": 0.993221,
             "roadClosure": false,
             "coordinates": {
                 "coordinate": [
@@ -7864,9 +7864,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC3",
-            "currentSpeed": 23,
+            "currentSpeed": 22,
             "freeFlowSpeed": 31,
-            "currentTravelTime": 98,
+            "currentTravelTime": 103,
             "freeFlowTravelTime": 73,
             "confidence": 1,
             "roadClosure": false,
@@ -7961,10 +7961,10 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 21,
-            "freeFlowSpeed": 24,
-            "currentTravelTime": 180,
-            "freeFlowTravelTime": 157,
+            "currentSpeed": 23,
+            "freeFlowSpeed": 23,
+            "currentTravelTime": 164,
+            "freeFlowTravelTime": 164,
             "confidence": 1,
             "roadClosure": false,
             "coordinates": {
@@ -8242,11 +8242,11 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 17,
-            "freeFlowSpeed": 26,
-            "currentTravelTime": 181,
-            "freeFlowTravelTime": 118,
-            "confidence": 0.99,
+            "currentSpeed": 27,
+            "freeFlowSpeed": 27,
+            "currentTravelTime": 114,
+            "freeFlowTravelTime": 114,
+            "confidence": 1,
             "roadClosure": false,
             "coordinates": {
                 "coordinate": [
@@ -8511,9 +8511,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 16,
+            "currentSpeed": 15,
             "freeFlowSpeed": 20,
-            "currentTravelTime": 139,
+            "currentTravelTime": 149,
             "freeFlowTravelTime": 111,
             "confidence": 0.99,
             "roadClosure": false,
@@ -8729,11 +8729,11 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 34,
-            "freeFlowSpeed": 34,
-            "currentTravelTime": 191,
-            "freeFlowTravelTime": 191,
-            "confidence": 1,
+            "currentSpeed": 28,
+            "freeFlowSpeed": 33,
+            "currentTravelTime": 232,
+            "freeFlowTravelTime": 196,
+            "confidence": 0.992796,
             "roadClosure": false,
             "coordinates": {
                 "coordinate": [
@@ -9118,11 +9118,11 @@
     {
         "flowSegmentData": {
             "frc": "FRC2",
-            "currentSpeed": 16,
+            "currentSpeed": 20,
             "freeFlowSpeed": 20,
-            "currentTravelTime": 566,
+            "currentTravelTime": 453,
             "freeFlowTravelTime": 453,
-            "confidence": 0.984652,
+            "confidence": 1,
             "roadClosure": false,
             "coordinates": {
                 "coordinate": [
@@ -9420,10 +9420,10 @@
     {
         "flowSegmentData": {
             "frc": "FRC6",
-            "currentSpeed": 17,
-            "freeFlowSpeed": 17,
-            "currentTravelTime": 358,
-            "freeFlowTravelTime": 358,
+            "currentSpeed": 14,
+            "freeFlowSpeed": 18,
+            "currentTravelTime": 435,
+            "freeFlowTravelTime": 338,
             "confidence": 1,
             "roadClosure": false,
             "coordinates": {
@@ -9645,11 +9645,11 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 15,
-            "freeFlowSpeed": 21,
-            "currentTravelTime": 217,
-            "freeFlowTravelTime": 155,
-            "confidence": 0.99,
+            "currentSpeed": 22,
+            "freeFlowSpeed": 22,
+            "currentTravelTime": 148,
+            "freeFlowTravelTime": 148,
+            "confidence": 1,
             "roadClosure": false,
             "coordinates": {
                 "coordinate": [
@@ -9830,9 +9830,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC3",
-            "currentSpeed": 39,
+            "currentSpeed": 52,
             "freeFlowSpeed": 52,
-            "currentTravelTime": 134,
+            "currentTravelTime": 101,
             "freeFlowTravelTime": 101,
             "confidence": 1,
             "roadClosure": false,
@@ -10055,11 +10055,11 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 42,
+            "currentSpeed": 52,
             "freeFlowSpeed": 52,
-            "currentTravelTime": 104,
+            "currentTravelTime": 84,
             "freeFlowTravelTime": 84,
-            "confidence": 0.99,
+            "confidence": 1,
             "roadClosure": false,
             "coordinates": {
                 "coordinate": [
@@ -10237,10 +10237,10 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 6,
-            "freeFlowSpeed": 19,
-            "currentTravelTime": 171,
-            "freeFlowTravelTime": 54,
+            "currentSpeed": 13,
+            "freeFlowSpeed": 18,
+            "currentTravelTime": 79,
+            "freeFlowTravelTime": 57,
             "confidence": 1,
             "roadClosure": false,
             "coordinates": {
@@ -10298,9 +10298,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC2",
-            "currentSpeed": 21,
+            "currentSpeed": 20,
             "freeFlowSpeed": 29,
-            "currentTravelTime": 108,
+            "currentTravelTime": 114,
             "freeFlowTravelTime": 78,
             "confidence": 1,
             "roadClosure": false,
@@ -10379,10 +10379,10 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 27,
-            "freeFlowSpeed": 38,
-            "currentTravelTime": 56,
-            "freeFlowTravelTime": 40,
+            "currentSpeed": 22,
+            "freeFlowSpeed": 39,
+            "currentTravelTime": 69,
+            "freeFlowTravelTime": 39,
             "confidence": 1,
             "roadClosure": false,
             "coordinates": {
@@ -10464,11 +10464,11 @@
     {
         "flowSegmentData": {
             "frc": "FRC6",
-            "currentSpeed": 18,
+            "currentSpeed": 15,
             "freeFlowSpeed": 20,
-            "currentTravelTime": 156,
+            "currentTravelTime": 187,
             "freeFlowTravelTime": 140,
-            "confidence": 0.99,
+            "confidence": 1,
             "roadClosure": false,
             "coordinates": {
                 "coordinate": [
@@ -10763,9 +10763,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 28,
+            "currentSpeed": 45,
             "freeFlowSpeed": 45,
-            "currentTravelTime": 86,
+            "currentTravelTime": 53,
             "freeFlowTravelTime": 53,
             "confidence": 1,
             "roadClosure": false,
@@ -10885,9 +10885,9 @@
         "flowSegmentData": {
             "frc": "FRC4",
             "currentSpeed": 43,
-            "freeFlowSpeed": 50,
+            "freeFlowSpeed": 51,
             "currentTravelTime": 120,
-            "freeFlowTravelTime": 103,
+            "freeFlowTravelTime": 101,
             "confidence": 1,
             "roadClosure": false,
             "coordinates": {
@@ -11190,10 +11190,10 @@
     {
         "flowSegmentData": {
             "frc": "FRC4",
-            "currentSpeed": 33,
-            "freeFlowSpeed": 41,
-            "currentTravelTime": 88,
-            "freeFlowTravelTime": 71,
+            "currentSpeed": 25,
+            "freeFlowSpeed": 42,
+            "currentTravelTime": 116,
+            "freeFlowTravelTime": 69,
             "confidence": 1,
             "roadClosure": false,
             "coordinates": {
@@ -11316,9 +11316,9 @@
         "flowSegmentData": {
             "frc": "FRC3",
             "currentSpeed": 11,
-            "freeFlowSpeed": 19,
+            "freeFlowSpeed": 18,
             "currentTravelTime": 105,
-            "freeFlowTravelTime": 60,
+            "freeFlowTravelTime": 64,
             "confidence": 1,
             "roadClosure": false,
             "coordinates": {
@@ -11541,9 +11541,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC3",
-            "currentSpeed": 16,
+            "currentSpeed": 19,
             "freeFlowSpeed": 30,
-            "currentTravelTime": 191,
+            "currentTravelTime": 161,
             "freeFlowTravelTime": 101,
             "confidence": 1,
             "roadClosure": false,
@@ -14389,11 +14389,11 @@
     {
         "flowSegmentData": {
             "frc": "FRC3",
-            "currentSpeed": 63,
-            "freeFlowSpeed": 77,
-            "currentTravelTime": 92,
-            "freeFlowTravelTime": 75,
-            "confidence": 0.94,
+            "currentSpeed": 67,
+            "freeFlowSpeed": 78,
+            "currentTravelTime": 87,
+            "freeFlowTravelTime": 74,
+            "confidence": 0.962413,
             "roadClosure": false,
             "coordinates": {
                 "coordinate": [
@@ -14454,9 +14454,9 @@
     {
         "flowSegmentData": {
             "frc": "FRC3",
-            "currentSpeed": 35,
+            "currentSpeed": 27,
             "freeFlowSpeed": 35,
-            "currentTravelTime": 28,
+            "currentTravelTime": 37,
             "freeFlowTravelTime": 28,
             "confidence": 1,
             "roadClosure": false,

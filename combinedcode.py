@@ -254,10 +254,10 @@ path = os.path.dirname(os.path.abspath(__file__))
 conn = sqlite3.connect(path + "/" + db_name)
 cur = conn.cursor()
 
-cur.execute("""
-DROP TABLE IF EXISTS DanTrafficFlow
-""")
-conn.commit()
+# cur.execute("""
+# DROP TABLE IF EXISTS DanTrafficFlow
+# """)
+# conn.commit()
 cur.execute("""
 CREATE TABLE IF NOT EXISTS DanTrafficFlow (
 id INTEGER PRIMARY KEY AUTOINCREMENT,

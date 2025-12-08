@@ -5,87 +5,87 @@ Somewhat Walkable: 5
 Very Walkable: 25
 Walker's Paradise: 52
 
-Overall combined score for Walkscore and Traffic Flow. The higher the score, the more cars/car dependent the location is
+Overall combined score for Walkscore and Traffic Flow. The higher the score, the more cars/car dependent the location is:
 Overall combined score for 40.7128,-74.006: 29.0
-Overall combined score for 34.0522,-118.2437: 27.5
-Overall combined score for 41.8781,-87.6298: 16.666666666666664
-Overall combined score for 29.7604,-95.3698: 25.0
+Overall combined score for 34.0522,-118.2437: 28.5
+Overall combined score for 41.8781,-87.6298: 18.166666666666664
+Overall combined score for 29.7604,-95.3698: 27.0
 Overall combined score for 33.4484,-112.074: 28.833333333333336
 Overall combined score for 39.9526,-75.1652: 15.5
-Overall combined score for 29.4241,-98.4936: 27.166666666666664
-Overall combined score for 32.7157,-117.1611: 20.833333333333336
+Overall combined score for 29.4241,-98.4936: 31.166666666666664
+Overall combined score for 32.7157,-117.1611: 22.833333333333336
 Overall combined score for 32.7767,-96.797: 106.0
-Overall combined score for 37.3382,-121.8863: 29.166666666666664
+Overall combined score for 37.3382,-121.8863: 28.166666666666664
 Overall combined score for 30.2672,-97.7431: 20.0
-Overall combined score for 30.3322,-81.6557: 65.0
+Overall combined score for 30.3322,-81.6557: 75.5
 Overall combined score for 32.7555,-97.3308: 23.0
-Overall combined score for 39.9612,-82.9988: 41.0
+Overall combined score for 39.9612,-82.9988: 43.5
 Overall combined score for 35.2271,-80.8431: 26.166666666666664
-Overall combined score for 37.7749,-122.4194: 12.833333333333336
+Overall combined score for 37.7749,-122.4194: 10.333333333333336
 Overall combined score for 39.7684,-86.1581: 24.0
-Overall combined score for 47.6062,-122.3321: 17.333333333333336
+Overall combined score for 47.6062,-122.3321: 18.333333333333336
 Overall combined score for 39.7392,-104.9903: 43.833333333333336
-Overall combined score for 38.9072,-77.0369: 24.666666666666664
-Overall combined score for 42.3601,-71.0589: 18.5
-Overall combined score for 31.7619,-106.485: 58.0
-Overall combined score for 36.1627,-86.7816: 16.666666666666664
+Overall combined score for 38.9072,-77.0369: 18.166666666666664
+Overall combined score for 42.3601,-71.0589: 17.0
+Overall combined score for 31.7619,-106.485: 50.0
+Overall combined score for 36.1627,-86.7816: 19.166666666666664
 Overall combined score for 42.3314,-83.0458: 24.666666666666664
-Overall combined score for 35.4676,-97.5164: 34.0
+Overall combined score for 35.4676,-97.5164: 34.5
 Overall combined score for 45.5051,-122.675: 88.83333333333334
 Overall combined score for 36.1699,-115.1398: 35.666666666666664
 Overall combined score for 35.1495,-90.049: 28.833333333333336
-Overall combined score for 38.2527,-85.7585: 44.666666666666664
-Overall combined score for 39.2904,-76.6122: 19.166666666666664
+Overall combined score for 38.2527,-85.7585: 40.666666666666664
+Overall combined score for 39.2904,-76.6122: 19.666666666666664
 Overall combined score for 43.0389,-87.9065: 24.0
 Overall combined score for 35.0844,-106.6504: 32.166666666666664
-Overall combined score for 32.2226,-110.9747: 21.166666666666664
-Overall combined score for 36.7378,-119.7871: 38.5
-Overall combined score for 38.5816,-121.4944: 43.333333333333336
-Overall combined score for 33.4152,-111.8315: 29.833333333333336
-Overall combined score for 33.749,-84.388: 30.0
+Overall combined score for 32.2226,-110.9747: 24.166666666666664
+Overall combined score for 36.7378,-119.7871: 37.5
+Overall combined score for 38.5816,-121.4944: 48.333333333333336
+Overall combined score for 33.4152,-111.8315: 31.333333333333336
+Overall combined score for 33.749,-84.388: 36.0
 Overall combined score for 41.2565,-95.9345: 47.833333333333336
 Overall combined score for 38.8339,-104.8214: 41.0
-Overall combined score for 35.7796,-78.6382: 10.333333333333336
-Overall combined score for 36.8529,-75.978: 25.833333333333336
+Overall combined score for 35.7796,-78.6382: 12.333333333333336
+Overall combined score for 36.8529,-75.978: 27.333333333333336
 Overall combined score for 25.7617,-80.1918: 24.0
 Overall combined score for 33.7701,-118.1937: 30.166666666666664
-Overall combined score for 37.8044,-122.2711: 33.333333333333336
-Overall combined score for 44.9778,-93.265: 32.5
-Overall combined score for 39.1031,-84.512: 24.166666666666664
-Overall combined score for 43.0731,-89.4012: 36.5
-Overall combined score for 35.0456,-85.3097: 35.0
+Overall combined score for 37.8044,-122.2711: 37.833333333333336
+Overall combined score for 44.9778,-93.265: 29.5
+Overall combined score for 39.1031,-84.512: 22.666666666666664
+Overall combined score for 43.0731,-89.4012: 36.0
+Overall combined score for 35.0456,-85.3097: 35.5
 Overall combined score for 39.7397,-75.539: 38.66666666666667
 Overall combined score for 32.6781,-83.222: 40.0
 Overall combined score for 29.9511,-90.0715: 109.0
 Overall combined score for 36.1745,-86.767: 62.75
-Overall combined score for 30.6954,-88.0399: 45.0
-Overall combined score for 39.961,-82.9988: 40.166666666666664
-Overall combined score for 40.4406,-79.9959: 28.333333333333336
-Overall combined score for 43.6532,-79.3832: 28.833333333333336
-Overall combined score for 40.7357,-74.1724: 31.5
-Overall combined score for 42.1015,-72.5898: 35.666666666666664
+Overall combined score for 30.6954,-88.0399: 45.5
+Overall combined score for 39.961,-82.9988: 38.666666666666664
+Overall combined score for 40.4406,-79.9959: 27.833333333333336
+Overall combined score for 43.6532,-79.3832: 29.333333333333336
+Overall combined score for 40.7357,-74.1724: 37.0
+Overall combined score for 42.1015,-72.5898: 35.166666666666664
 Overall combined score for 33.5207,-86.8025: 29.5
-Overall combined score for 32.7765,-79.9311: 48.5
-Overall combined score for 38.627,-90.1994: 49.75
+Overall combined score for 32.7765,-79.9311: 45.0
+Overall combined score for 38.627,-90.1994: 51.75
 Overall combined score for 36.0972,-79.7745: 40.66666666666667
-Overall combined score for 40.7306,-73.9352: 39.5
-Overall combined score for 41.6005,-93.6091: 51.25
-Overall combined score for 36.7783,-119.4179: 52.0
-Overall combined score for 40.6501,-73.9496: 64.83333333333334
+Overall combined score for 40.7306,-73.9352: 38.5
+Overall combined score for 41.6005,-93.6091: 55.25
+Overall combined score for 36.7783,-119.4179: 58.5
+Overall combined score for 40.6501,-73.9496: 69.83333333333334
 Overall combined score for 34.0007,-81.0348: 36.16666666666667
-Overall combined score for 36.7468,-119.7726: 20.5
-Overall combined score for 21.3069,-157.8583: 40.25
-Overall combined score for 47.2529,-122.4443: 42.166666666666664
-Overall combined score for 40.7608,-111.891: 31.0
+Overall combined score for 36.7468,-119.7726: 23.5
+Overall combined score for 21.3069,-157.8583: 39.75
+Overall combined score for 47.2529,-122.4443: 40.166666666666664
+Overall combined score for 40.7608,-111.891: 29.5
 Overall combined score for 39.0997,-94.5786: 39.5
 Overall combined score for 33.6846,-117.8265: 38.16666666666667
-Overall combined score for 35.3733,-119.0187: 45.333333333333336
-Overall combined score for 40.014,-105.2705: 59.0
+Overall combined score for 35.3733,-119.0187: 53.833333333333336
+Overall combined score for 40.014,-105.2705: 59.5
 Overall combined score for 43.0481,-76.1474: 65.66666666666666
-Overall combined score for 39.5296,-119.8138: 55.5
-Overall combined score for 40.8258,-74.209: 34.0
+Overall combined score for 39.5296,-119.8138: 52.0
+Overall combined score for 40.8258,-74.209: 33.5
 Overall combined score for 33.3062,-111.8413: 43.0
-Overall combined score for 41.6639,-83.5552: 33.0
+Overall combined score for 41.6639,-83.5552: 34.5
 Overall combined score for 44.9537,-93.09: 67.16666666666667
 Overall combined score for 26.0078,-80.2963: 71.16666666666666
 Overall combined score for 42.6526,-73.7562: 64.5
@@ -95,5 +95,5 @@ Overall combined score for 35.994,-78.8986: 48.0
 
 
 Traffic Congestion vs AQI Category:
-Moderate: Average Congestion = 2.4761904761904763, Count = 21
-Good: Average Congestion = 5.449275362318841, Count = 69
+Moderate: Average Congestion = 3.380952380952381, Count = 21
+Good: Average Congestion = 3.971014492753623, Count = 69
