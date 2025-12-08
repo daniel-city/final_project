@@ -294,3 +294,37 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+def traffic_aqi_relationship():
+    conn = sqlite3.connect("test.db")
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT aqi.aqi, tf.current_speed, tf.freeflow_speed FROM aqi_results aqi
+                JOIN DanTrafficFlow tf ON aqi.location_id + tf.coordinates_id
+    """)
+    rows = cur.fetchall()
+    conn.close()
+
+    results = {}
+
+    for aqi_value, current, freeflow in rows:
+        category = aqi_category(aqi_value)
+
+        congestion = max(freeflow - current, 0)
+        if category not in results:
+            results[category] = {"total": 0, "count": 0}
+
+        results[category]["total"] += congestion
+        results[category]["count"] += 1
+    
+    final = {}
+    for category, info in results.items():
+        avg = info["total"] / info["count"] if info["count"] > 0 else 0
+        final[category] = {
+            "avg_congestion": avg,
+            "count": info["count"]
+        }
+    
+    return final
