@@ -64,66 +64,17 @@ json_data = json.loads(file_data)
 
 # !!! CODE FOR SQL
 
-# db_name = "TrafficFlow.db"
-# path = os.path.dirname(os.path.abspath(__file__))
-# conn = sqlite3.connect(path + "/" + db_name)
-# cur = conn.cursor()
-
-# cur.execute("""
-# DROP TABLE IF EXISTS TrafficFlow
-# """)
-
-# cur.execute("""
-# CREATE TABLE IF NOT EXISTS TrafficFlow (
-# id INTEGER PRIMARY KEY AUTOINCREMENT,
-# current_speed INTEGER,
-# freeflow_speed INTEGER,
-# current_travel_time INTEGER,
-# freeflow_travel_time INTEGER,
-# latitude FLOAT,
-# longitude FLOAT
-# )
-# """)
-# counter = 0
-
-# for location in json_data:
-#     current_speed = location["flowSegmentData"]["currentSpeed"]
-#     #print(current_speed)
-#     freeflow_speed = location["flowSegmentData"]["freeFlowSpeed"]
-#     current_travel_time = location["flowSegmentData"]["currentTravelTime"]
-#     freeflow_travel_time = location["flowSegmentData"]["freeFlowTravelTime"]
-#     latitude = coordinate_points[counter][:9]
-#     longitude = coordinate_points[counter][10:]
-#     counter += 1
-#     cur.execute("""
-#     INSERT OR IGNORE INTO TrafficFlow (current_speed, freeflow_speed, current_travel_time, freeflow_travel_time, latitude, longitude)
-#     VALUES (?, ?, ?, ?, ?, ?) """, (current_speed, freeflow_speed, current_travel_time, freeflow_travel_time, latitude, longitude))
-
-# # conn.commit()
-
-# # for coordinate in coordinate_points:
-# #     latitude = coordinate[:9]
-# #     longitude = coordinate[10:]
-# #     cur.execute("""
-# #     INSERT OR IGNORE INTO TrafficFlow (latitude, longitude)
-# #     VALUES (?, ?) """, (latitude, longitude))
-
-# conn.commit()
-# conn.close()
-
-
-
-db_name = "test.db"
+db_name = "TrafficFlow.db"
 path = os.path.dirname(os.path.abspath(__file__))
 conn = sqlite3.connect(path + "/" + db_name)
 cur = conn.cursor()
 
 cur.execute("""
-DROP TABLE IF EXISTS test
+DROP TABLE IF EXISTS TrafficFlow
 """)
 
 cur.execute("""
-CREATE TABLE IF NOT EXISTS test (
+CREATE TABLE IF NOT EXISTS TrafficFlow (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
 current_speed INTEGER,
 freeflow_speed INTEGER,
@@ -145,7 +96,7 @@ for location in json_data:
     longitude = coordinate_points[counter][10:]
     counter += 1
     cur.execute("""
-    INSERT OR IGNORE INTO test (current_speed, freeflow_speed, current_travel_time, freeflow_travel_time, latitude, longitude)
+    INSERT OR IGNORE INTO TrafficFlow (current_speed, freeflow_speed, current_travel_time, freeflow_travel_time, latitude, longitude)
     VALUES (?, ?, ?, ?, ?, ?) """, (current_speed, freeflow_speed, current_travel_time, freeflow_travel_time, latitude, longitude))
 
 # conn.commit()
@@ -156,6 +107,114 @@ for location in json_data:
 #     cur.execute("""
 #     INSERT OR IGNORE INTO TrafficFlow (latitude, longitude)
 #     VALUES (?, ?) """, (latitude, longitude))
+
+conn.commit()
+#conn.close()
+
+
+
+# db_name = "test.db"
+# path = os.path.dirname(os.path.abspath(__file__))
+# conn = sqlite3.connect(path + "/" + db_name)
+# cur = conn.cursor()
+
+# cur.execute("""
+# DROP TABLE IF EXISTS test
+# """)
+
+# cur.execute("""
+# CREATE TABLE IF NOT EXISTS test (
+# id INTEGER PRIMARY KEY AUTOINCREMENT,
+# current_speed INTEGER,
+# freeflow_speed INTEGER,
+# current_travel_time INTEGER,
+# freeflow_travel_time INTEGER,
+# latitude FLOAT,
+# longitude FLOAT
+# )
+# """)
+# counter = 0
+
+# for location in json_data:
+#     current_speed = location["flowSegmentData"]["currentSpeed"]
+#     #print(current_speed)
+#     freeflow_speed = location["flowSegmentData"]["freeFlowSpeed"]
+#     current_travel_time = location["flowSegmentData"]["currentTravelTime"]
+#     freeflow_travel_time = location["flowSegmentData"]["freeFlowTravelTime"]
+#     latitude = coordinate_points[counter][:9]
+#     longitude = coordinate_points[counter][10:]
+#     counter += 1
+#     cur.execute("""
+#     INSERT OR IGNORE INTO test (current_speed, freeflow_speed, current_travel_time, freeflow_travel_time, latitude, longitude)
+#     VALUES (?, ?, ?, ?, ?, ?) """, (current_speed, freeflow_speed, current_travel_time, freeflow_travel_time, latitude, longitude))
+
+# # conn.commit()
+
+# # for coordinate in coordinate_points:
+# #     latitude = coordinate[:9]
+# #     longitude = coordinate[10:]
+# #     cur.execute("""
+# #     INSERT OR IGNORE INTO TrafficFlow (latitude, longitude)
+# #     VALUES (?, ?) """, (latitude, longitude))
+
+# conn.commit()
+# conn.close()
+
+
+traffic_list = []
+
+cur.execute("""
+SELECT current_speed, freeflow_speed
+FROM TrafficFlow
+""")
+rows_traffic = cur.fetchall()
+for row in rows_traffic:
+    addition = row[0] + row[1]
+    average = addition / 2
+    print(average)
+    traffic_list.append(average)
+
+print(traffic_list)
+
+walkscore_list = []
+
+cur.execute("""
+SELECT walkscore, transit_score, bike_score
+FROM walkscore_results
+""")
+rows_walkscore = cur.fetchall()
+for row in rows_walkscore:
+    addition = row[0] + row[1] + row[2]
+    average = addition / 3
+    reverse_walkscore = 100 - average
+    walkscore_list.append(reverse_walkscore)
+
+
+counter = 0
+
+final_coordinates_score = []
+
+for item in traffic_list:
+    average = item + walkscore_list[counter] / 2
+    counter += 1
+    final_coordinates_score.append(average)
+
+cur.execute("""
+SELECT latitude, longitude
+FROM locations
+""")
+
+final_coordinates_dict = {}
+
+rows_coordinates = cur.fetchall()
+counter_2 = 0
+for row in rows_coordinates:
+    final_coordinates_dict[row(0) + "," + row(1)] = final_coordinates_score[counter_2]
+    counter_2 += 1
+
+
+
+
 
 conn.commit()
 conn.close()

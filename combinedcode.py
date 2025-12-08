@@ -285,7 +285,7 @@ conn.commit()
 
 
 # CONN CLOSE
-conn.close()
+#conn.close()
 
 #amy code
 amy_key = "bd1842990d39e66f7830f18d756cb443636008b7"
@@ -432,7 +432,7 @@ def get_top_cities_aqi():
         print("  Added AQI entry.")
 
     print("\nFinished. Added:", added, "new AQI entries.")
-    conn.close()
+    #conn.close()
 
 def aqi_category(aqi):
     if aqi is None:
@@ -460,7 +460,7 @@ def calculate_num_category_aq():
     """)
 
     rows = cur.fetchall()
-    conn.close()
+    #conn.close()
 
     summary = {}
 
@@ -484,3 +484,69 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# TEXT OUTPUT OF CALCULATIONS
+
+traffic_list = []
+
+cur.execute("""
+SELECT current_speed, freeflow_speed
+FROM DanTrafficFlow
+""")
+rows_traffic = cur.fetchall()
+for row in rows_traffic:
+    addition = row[0] + row[1]
+    average = addition / 2
+    print(average)
+    traffic_list.append(average)
+
+#print(traffic_list)
+
+walkscore_list = []
+
+cur.execute("""
+SELECT walkscore, transit_score, bike_score
+FROM walkscore_results
+""")
+rows_walkscore = cur.fetchall()
+for row in rows_walkscore:
+    print('THIS IS THE ROW')
+    print(row)
+    a = row[0] or 0
+    b = row[1] or 0
+    c = row[2] or 0
+    addition = a + b + c
+    if b == 0:
+        average = addition / 2
+    else:
+        average = addition / 3
+    reverse_walkscore = 100 - average
+    walkscore_list.append(reverse_walkscore)
+
+
+counter = 0
+
+final_coordinates_score = []
+
+for item in traffic_list:
+    average = item + walkscore_list[counter] / 2
+    counter += 1
+    final_coordinates_score.append(average)
+
+cur.execute("""
+SELECT latitude, longitude
+FROM locations
+""")
+
+final_coordinates_dict = {}
+
+rows_coordinates = cur.fetchall()
+counter_2 = 0
+for row in rows_coordinates:
+    final_coordinates_dict[row(0) + "," + row(1)] = final_coordinates_score[counter_2]
+    counter_2 += 1
+
+print(final_coordinates_dict)
+
+conn.commit()
