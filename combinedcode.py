@@ -11,7 +11,7 @@ micah_api_key = "823ebf192a9537ddb2cbb92ea29ff225"
 
 # DANIEL'S API KEY AND COORDINATES
 
-daniel_api_key = "WZ2qAuxTYFo7cOtQYZqISrrrdj6HSpYs"
+daniel_api_key = "rwB7lgYNsAsKDJupv7fHFd8MXaHuK8TQ"
 coordinate_points = [
     "40.7128,-74.0060",  # New York, NY
     "34.0522,-118.2437", # Los Angeles, CA
@@ -147,6 +147,7 @@ coordinate_points = [
     "33.5207,-86.8025",  # Birmingham Metro
 ]
 
+
 daniel_url = "https://api.tomtom.com/traffic/services/4/flowSegmentData/absolute/10/json"
 
 one_hundred_data = []
@@ -281,7 +282,7 @@ def main():
     create_SQL(conn)
     get_coords(conn, coordinate_points)
     results = num_description_and_visual(conn)
-    conn.close()
+    #conn.close()
     calc_and_write(results)
 
 
@@ -365,15 +366,15 @@ def init_db():
     conn = sqlite3.connect(db_file)
     cur = conn.cursor()
 
+    # DO NOT DROP ANY TABLES HERE
     cur.execute("""
     CREATE TABLE IF NOT EXISTS locations (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    latitude REAL NOT NULL,
-    longitude REAL NOT NULL,
-    UNIQUE(latitude, longitude)
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        latitude REAL NOT NULL,
+        longitude REAL NOT NULL,
+        UNIQUE(latitude, longitude)
     );
     """)
-
 
     cur.execute("""
     CREATE TABLE IF NOT EXISTS aqi_results (
@@ -394,7 +395,6 @@ def init_db():
     """)
 
     conn.commit()
-
     return conn, cur
 
 def fetch_aqi(lat, lon):
@@ -414,6 +414,7 @@ def fetch_aqi(lat, lon):
 def get_top_cities_aqi():
     conn, cur = init_db()
 
+    # load existing raw json cache
     if os.path.exists(raw_json_file):
         try:
             with open(raw_json_file, "r") as f:
@@ -423,50 +424,42 @@ def get_top_cities_aqi():
     else:
         raw_json_data = []
 
-    cur.execute("SELECT COUNT(*) FROM aqi_results")
-    completed = cur.fetchone()[0]
-
-    next_coords = coordinate_points[completed: completed + batch_size]
-
     added = 0
 
-    for coord in next_coords:
+    for coord in coordinate_points:
+        if added >= batch_size:
+            break
+
         lat_str, lon_str = coord.split(',')
-        lat = float(lat_str)
-        lon = float(lon_str)
-        #print("Getting AQI for:", lat, lon)
-         
-        cur.execute("""
-            INSERT OR IGNORE INTO locations (latitude, longitude) VALUES (?, ?)
-        """, (lat, lon))
+        lat = float(lat_str.strip())
+        lon = float(lon_str.strip())
+
+        cur.execute("INSERT OR IGNORE INTO locations (latitude, longitude) VALUES (?, ?)", (lat, lon))
         conn.commit()
 
-        cur.execute("""
-            SELECT id FROM locations WHERE latitude=? AND longitude=?
-        """, (lat, lon))
+        # find location id
+        cur.execute("SELECT id FROM locations WHERE latitude=? AND longitude=?", (lat, lon))
         loc_row = cur.fetchone()
         if not loc_row:
-            print("  Failed to insert location:", lat, lon)
+            print("  Failed to insert/find location:", lat, lon)
             continue
-
         loc_id = loc_row[0]
 
         cur.execute("SELECT 1 FROM aqi_results WHERE location_id = ?", (loc_id,))
         if cur.fetchone():
-            #print("  AQI already exists for this location.")
             continue
 
         data = fetch_aqi(lat, lon)
         if data is None:
-            print("  Failed to fetch AQI data.")
+            print(f"  Failed to fetch AQI for {lat},{lon} (API returned error). Will retry later.")
             continue
-            
+
+        # store raw API snapshot
         raw_json_data.append({
             "latitude": lat,
             "longitude": lon,
             "api_response": data
         })
-
         with open(raw_json_file, "w") as f:
             json.dump(raw_json_data, f, indent=2)
 
@@ -477,7 +470,7 @@ def get_top_cities_aqi():
             if k in iaqi and isinstance(iaqi[k], dict):
                 return iaqi[k].get("v")
             return None
-        
+
         cur.execute("""
             INSERT INTO aqi_results (
                 location_id, aqi, dominentpol, time_utc,
@@ -492,13 +485,12 @@ def get_top_cities_aqi():
             val("so2"), val("co"),
             json.dumps(data)
         ))
-
         conn.commit()
         added += 1
-        print("  Added AQI entry.")
+        print("  Added AQI entry for", lat, lon)
 
     print("\nFinished. Added:", added, "new AQI entries.")
-    #conn.close()
+
 
 def aqi_category(aqi):
     if aqi is None:
@@ -548,7 +540,7 @@ def walkscore_per_aqi():
         JOIN location_mapping lm ON aqi.location_id = lm.aqi_location_id
         JOIN walkscore_results ws ON ws.location_id = lm.location_id""")
     rows = cur.fetchall()
-    conn.close()
+    #conn.close()
 
     total_wp = {}
     walkers_paradise_counts = {}
@@ -626,7 +618,10 @@ counter = 0
 final_coordinates_score = []
 
 for item in traffic_list:
-    average = item + walkscore_list[counter] / 2
+    try:
+        average = item + walkscore_list[counter] / 2
+    except:
+        continue
     counter += 1
     final_coordinates_score.append(average)
 
@@ -655,6 +650,102 @@ print(len(final_coordinates_dict))
 conn.commit()
 
 with open("outputs.txt", "a") as file:
-    f.write(f"Overall combined score for Walkscore and Traffic Flow. The higher the score, the more cars/car dependent the location is")
+    file.write("\nOverall combined score for Walkscore and Traffic Flow. The higher the score, the more cars/car dependent the location is:\n")
     for key, value in final_coordinates_dict.items():
-        f.write(f"Overall combined score for {key}: {value}")
+        file.write(f"Overall combined score for {key}: {value}\n")
+
+def traffic_aqi_relationship():
+    conn = sqlite3.connect("test.db")
+    cur = conn.cursor()
+
+    cur.execute("""
+    SELECT aqi.aqi, tf.current_speed, tf.freeflow_speed
+    FROM aqi_results aqi
+    JOIN locations loc ON aqi.location_id = loc.id
+    JOIN DanTrafficFlow tf ON tf.coordinates_id = loc.id
+    """)
+
+    rows = cur.fetchall()
+    #conn.close()
+
+    results = {}
+
+    for aqi_value, current, freeflow in rows:
+        category = aqi_category(aqi_value)
+
+        congestion = max(freeflow - current, 0)
+        if category not in results:
+            results[category] = {"total": 0, "count": 0}
+
+        results[category]["total"] += congestion
+        results[category]["count"] += 1
+    
+    final = {}
+    for category, info in results.items():
+        avg = info["total"] / info["count"] if info["count"] > 0 else 0
+        final[category] = {
+            "avg_congestion": avg,
+            "count": info["count"]
+        }
+    
+    return final
+
+traffic_vs_aqi = traffic_aqi_relationship()
+print(json.dumps(traffic_vs_aqi, indent=2))
+
+with open("outputs.txt", "a") as out:
+    out.write("\nTraffic Congestion × AQI Category Analysis\n")
+    out.write("This section summarizes the average traffic congestion levels for each AQI category.\n")
+    out.write("Congestion is calculated as: freeflow_speed - current_speed.\n\n")
+
+    for category, stats in traffic_vs_aqi.items():
+        avg_cong = stats["avg_congestion"]
+        count = stats["count"]
+        out.write(f"\nAQI Category: {category}\n")
+        out.write(f"  • Data points: {count}\n")
+        out.write(f"  • Average congestion: {avg_cong:.2f}\n")
+
+def visualize_traffic_vs_aqi(traffic_vs_aqi):
+    categories = list(traffic_vs_aqi.keys())
+    avg_congestion = [traffic_vs_aqi[c]["avg_congestion"] for c in categories]
+    
+    plt.figure(figsize=(10, 6))
+    plt.bar(categories, avg_congestion)
+    
+    plt.xlabel("AQI Category")
+    plt.ylabel("Average Traffic Congestion\n(freeflow_speed - current_speed)")
+    plt.title("Average Traffic Congestion by AQI Category")
+    plt.tight_layout()
+    plt.savefig("traffic_vs_aqi.png")
+    plt.show()
+    plt.close()
+
+print("ABOUT TO DRAW GRAPH!!!!")
+visualize_traffic_vs_aqi(traffic_vs_aqi)
+
+# DANIEL'S VISUALISATION
+
+visualisation_dict = {}
+
+cur.execute("""
+SELECT freeflow_speed, freeflow_travel_time
+FROM DanTrafficFlow
+""")
+rows = cur.fetchall()
+for row in rows:
+    visualisation_dict[row[0]] = row[1]
+
+print(visualisation_dict)
+
+visualisation_sorted =sorted(visualisation_dict.items(), key=lambda x: x[1])
+song_name, play_count = zip(*visualisation_sorted)
+fig = plt.figure(1, figsize=(10,5))
+ax1 = fig.add_subplot(111)
+ax1.scatter(song_name, play_count, color = "green")
+ax1.ticklabel_format(axis="x", style="plain")
+ax1.set_xlabel("Freeflow Speed")
+ax1.set_ylabel("Freeflow Travel Time")
+ax1.set_title("Scatterplot of Freeflow Speed vs Freeflow Travel Time")
+plt.tight_layout()
+plt.savefig("traffic_flow.png")
+plt.show()

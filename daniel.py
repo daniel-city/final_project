@@ -2,10 +2,11 @@ import json
 import requests
 import sqlite3
 import os
+import matplotlib.pyplot as plt
 
 # !!! CODE FOR API
 
-api_key = "WZ2qAuxTYFo7cOtQYZqISrrrdj6HSpYs"
+api_key = "rwB7lgYNsAsKDJupv7fHFd8MXaHuK8TQ"
 point_test = '52.41072,4.84239'
 point_test_2 = '42.281735,-83.739992'
 #url = "https://api.tomtom.com/map/1/tile/basic/main/0/0/0.png?view=Unified&key=YOUR_API_KEY"
@@ -161,65 +162,92 @@ conn.commit()
 # conn.close()
 
 
-traffic_list = []
+# traffic_list = []
+
+# cur.execute("""
+# SELECT current_speed, freeflow_speed
+# FROM TrafficFlow
+# """)
+# rows_traffic = cur.fetchall()
+# for row in rows_traffic:
+#     addition = row[0] + row[1]
+#     average = addition / 2
+#     print(average)
+#     traffic_list.append(average)
+
+# print(traffic_list)
+
+# walkscore_list = []
+
+# cur.execute("""
+# SELECT walkscore, transit_score, bike_score
+# FROM walkscore_results
+# """)
+# rows_walkscore = cur.fetchall()
+# for row in rows_walkscore:
+#     addition = row[0] + row[1] + row[2]
+#     average = addition / 3
+#     reverse_walkscore = 100 - average
+#     walkscore_list.append(reverse_walkscore)
+
+
+# counter = 0
+
+# final_coordinates_score = []
+
+# for item in traffic_list:
+#     average = item + walkscore_list[counter] / 2
+#     counter += 1
+#     final_coordinates_score.append(average)
+
+# cur.execute("""
+# SELECT latitude, longitude
+# FROM locations
+# """)
+
+# final_coordinates_dict = {}
+
+# rows_coordinates = cur.fetchall()
+# counter_2 = 0
+# for row in rows_coordinates:
+#     final_coordinates_dict[row(0) + "," + row(1)] = final_coordinates_score[counter_2]
+#     counter_2 += 1
+
+
+
+
+
+# conn.commit()
+# conn.close()
+
+# with open("outputs.txt", "a") as file:
+#     f.write(f"Overall combined score for Walkscore and Traffic Flow. The higher the score, the more cars/car dependent the location is")
+#     for key, value in final_coordinates_dict.items():
+#         f.write(f"Overall combined score for {key}: {value}")
+
+# VISUALIZATION
+
+visualisation_dict = {}
 
 cur.execute("""
-SELECT current_speed, freeflow_speed
+SELECT freeflow_speed, freeflow_travel_time
 FROM TrafficFlow
 """)
-rows_traffic = cur.fetchall()
-for row in rows_traffic:
-    addition = row[0] + row[1]
-    average = addition / 2
-    print(average)
-    traffic_list.append(average)
+rows = cur.fetchall()
+for row in rows:
+    visualisation_dict[row[0]] = row[1]
 
-print(traffic_list)
+print(visualisation_dict)
 
-walkscore_list = []
-
-cur.execute("""
-SELECT walkscore, transit_score, bike_score
-FROM walkscore_results
-""")
-rows_walkscore = cur.fetchall()
-for row in rows_walkscore:
-    addition = row[0] + row[1] + row[2]
-    average = addition / 3
-    reverse_walkscore = 100 - average
-    walkscore_list.append(reverse_walkscore)
-
-
-counter = 0
-
-final_coordinates_score = []
-
-for item in traffic_list:
-    average = item + walkscore_list[counter] / 2
-    counter += 1
-    final_coordinates_score.append(average)
-
-cur.execute("""
-SELECT latitude, longitude
-FROM locations
-""")
-
-final_coordinates_dict = {}
-
-rows_coordinates = cur.fetchall()
-counter_2 = 0
-for row in rows_coordinates:
-    final_coordinates_dict[row(0) + "," + row(1)] = final_coordinates_score[counter_2]
-    counter_2 += 1
-
-
-
-
-
-conn.commit()
-conn.close()
-
-with open("outputs.txt", "a") as file:
-    f.write(f"Overall combined score for Walkscore and Traffic Flow. The higher the score, the more cars/car dependent the location is")
-    for key, value in final_coordinates_dict.items():
-        f.write(f"Overall combined score for {key}: {value}")
+visualisation_sorted =sorted(visualisation_dict.items(), key=lambda x: x[1])
+song_name, play_count = zip(*visualisation_sorted)
+fig = plt.figure(1, figsize=(10,5))
+ax1 = fig.add_subplot(111)
+ax1.scatter(song_name, play_count, color = "green")
+ax1.ticklabel_format(axis="x", style="plain")
+ax1.set_xlabel("Freeflow Speed")
+ax1.set_ylabel("Freeflow Travel Time")
+ax1.set_title("Scatterplot of Freeflow Speed vs Freeflow Travel Time")
+plt.tight_layout()
+plt.savefig("traffic_flow.png")
+plt.show()

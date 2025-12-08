@@ -1,6 +1,6 @@
-Total locations: 124
+Total locations: 128
 
 Car-Dependent: 10
 Somewhat Walkable: 10
-Very Walkable: 40
-Walker's Paradise: 64
+Very Walkable: 42
+Walker's Paradise: 66
