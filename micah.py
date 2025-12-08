@@ -2,6 +2,7 @@ import requests
 import sqlite3
 import time
 import json
+import matplotlib.pyplot as plt
 
 api_key = "823ebf192a9537ddb2cbb92ea29ff225"
 
@@ -154,7 +155,7 @@ def get_coords(conn, coords):
         if bike_score is None:
             bike_score = 0
         cur.execute("""INSERT INTO walkscore_results (location_id, walkscore, description, transit_score, bike_score) VALUES (?, ?, ?, ?, ?)""",
-        (location_id, data.get("walkscore"), data.get("description"), data.get("transit", {}).get("score"), data.get("bike", {}).get("score")))
+        (location_id, data.get("walkscore"), data.get("description"), transit_score, bike_score))
         conn.commit()
         time.sleep(1)
 
@@ -162,7 +163,22 @@ def get_coords(conn, coords):
 def num_description(conn):
     cur = conn.cursor()
     cur.execute("SELECT description, COUNT(*) FROM walkscore_results GROUP BY description")
-    return cur.fetchall()
+    results = cur.fetchall()
+
+    descriptions = [desc for desc, count in results]
+    counts = [count for desc, count in results]
+    plt.figure(figsize=(10, 6))
+    plt.barh(descriptions, counts, color="skyblue")
+    plt.xlabel("Number of Locations")
+    plt.ylabel("Walk Score Description")
+    plt.title("Number of Locations by Walk Score Description")
+    plt.gca().invert_yaxis()
+    plt.tight_layout()
+    plt.savefig("walkscore_summary.png")
+    plt.show()
+    plt.close()
+
+    return results
 
 
 def calc_and_write(results):
@@ -194,3 +210,31 @@ def calc_and_write(results):
 #         wp_count = walkers_paradise_counts.get(category, 0)
 #         rates[category] = wp_count / total if total > 0 else 0
 #     return rates
+
+# def get_top_songs(db) -> dict:
+#     conn = sqlite3.connect(db)
+#     cur = conn.cursor()
+#     cur.execute("""SELECT tracks.name AS track_name, artists.name AS artist_name, COUNT(*) AS play_count FROM listening_history
+#         JOIN tracks ON listening_history.track_id = tracks.id
+#         JOIN albums ON tracks.album_id = albums.id
+#         JOIN artists ON albums.artist_id = artists.id
+#         GROUP BY tracks.name, artists.name
+#         ORDER BY play_count DESC
+#         LIMIT 5;""")
+#     rows = cur.fetchall()
+#     conn.close()
+
+#     top_songs = {}
+#     for track, artist, play_count in rows:
+#         top_songs[track] = play_count
+
+#     plt.figure(figsize=(10, 6))
+#     plt.barh(list(top_songs.keys()), list(top_songs.values()))
+#     plt.xlabel("Play Count")
+#     plt.title("Top 5 Most-Played Songs")
+#     plt.gca().invert_yaxis()
+#     plt.tight_layout()
+#     plt.savefig("top_songs.png")
+#     plt.close()
+
+#     return top_songs

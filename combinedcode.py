@@ -200,7 +200,7 @@ def get_coords(conn, coords):
         if bike_score is None:
             bike_score = 0
         cur.execute("""INSERT INTO walkscore_results (location_id, walkscore, description, transit_score, bike_score) VALUES (?, ?, ?, ?, ?)""",
-        (location_id, data.get("walkscore"), data.get("description"), data.get("transit", {}).get("score"), data.get("bike", {}).get("score")))
+        (location_id, data.get("walkscore"), data.get("description"), transit_score, bike_score))
         conn.commit()
         time.sleep(1)
 
