@@ -1,6 +1,9 @@
-Total locations: 67
+Total locations: 90
 
-Car-Dependent: 3
+Car-Dependent: 2
 Somewhat Walkable: 3
-Very Walkable: 19
-Walker's Paradise: 42
+Very Walkable: 23
+Walker's Paradise: 62
+Overall combined score for Walkscore and Traffic Flow. The higher the score, the more cars/car dependent the location is
+
+Traffic Congestion vs AQI Category:
