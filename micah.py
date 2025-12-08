@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 api_key = "823ebf192a9537ddb2cbb92ea29ff225"
 
-coords = [
+coordinate_points = [
     "40.7128,-74.0060",   # New York, NY
     "34.0522,-118.2437",  # Los Angeles, CA
     "41.8781,-87.6298",   # Chicago, IL
@@ -168,7 +168,7 @@ def num_description(conn):
     descriptions = [desc for desc, count in results]
     counts = [count for desc, count in results]
     plt.figure(figsize=(10, 6))
-    plt.barh(descriptions, counts, color="skyblue")
+    plt.barh(descriptions, counts, color="red")
     plt.xlabel("Number of Locations")
     plt.ylabel("Walk Score Description")
     plt.title("Number of Locations by Walk Score Description")
@@ -177,7 +177,6 @@ def num_description(conn):
     plt.savefig("walkscore_summary.png")
     plt.show()
     plt.close()
-
     return results
 
 
@@ -187,6 +186,18 @@ def calc_and_write(results):
         f.write(f"Total locations: {total}\n\n")
         for description, count in results:
             f.write(f"{description}: {count}\n")
+
+def main():
+    conn = sqlite3.connect("test.db")
+    create_SQL(conn)
+    get_coords(conn, coordinate_points)
+    results = num_description(conn)
+    conn.close()
+    calc_and_write(results)
+
+
+if __name__ == "__main__":
+    main()
 
 # def walkscore_per_aqi():
 #     conn = sqlite3.connect("test.db")
