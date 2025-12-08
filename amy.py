@@ -249,3 +249,42 @@ def get_top_cities_aqi():
 
     print("\nFinished. Added:", added, "new AQI entries.")
     conn.close()
+
+def aqi_category(aqi):
+    if aqi is None:
+        return "Unknown"
+    if aqi <= 50:
+        return "Good"
+    elif aqi <= 100:
+        return "Moderate"
+    elif aqi <= 150:
+        return "Unhealthy for Sensitive Groups"
+    elif aqi <= 200:
+        return "Unhealthy"
+    elif aqi <= 300:
+        return "Very Unhealthy"
+    else:
+        return "Hazardous"
+
+def calculate_num_category_aq():
+    conn = sqlite3.connect(db_file)
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT aqi_results.aqi
+        FROM aqi_results
+    """)
+
+    rows = cur.fetchall()
+    conn.close()
+
+    summary = {}
+
+    for (aqi,) in rows:
+        category = aqi_category(aqi)
+
+        if category not in summary:
+            summary[category] = {"count": 0}
+        summary[category]["count"] += 1
+
+    return summary
