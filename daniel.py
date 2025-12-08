@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 # !!! CODE FOR API
 
-api_key = "WZ2qAuxTYFo7cOtQYZqISrrrdj6HSpYs"
+api_key = "rwB7lgYNsAsKDJupv7fHFd8MXaHuK8TQ"
 point_test = '52.41072,4.84239'
 point_test_2 = '42.281735,-83.739992'
 #url = "https://api.tomtom.com/map/1/tile/basic/main/0/0/0.png?view=Unified&key=YOUR_API_KEY"
@@ -237,17 +237,17 @@ rows = cur.fetchall()
 for row in rows:
     visualisation_dict[row[0]] = row[1]
 
-
+print(visualisation_dict)
 
 visualisation_sorted =sorted(visualisation_dict.items(), key=lambda x: x[1])
 song_name, play_count = zip(*visualisation_sorted)
 fig = plt.figure(1, figsize=(10,5))
 ax1 = fig.add_subplot(111)
-ax1.scatter(song_name, play_count)
+ax1.scatter(song_name, play_count, color = "green")
 ax1.ticklabel_format(axis="x", style="plain")
-ax1.set_xlabel("Play Count")
-ax1.set_ylabel("Song Name")
-ax1.set_title("Top 5 Most-Played Songs")
+ax1.set_xlabel("Freeflow Speed")
+ax1.set_ylabel("Freeflow Travel Time")
+ax1.set_title("Scatterplot of Freeflow Speed vs Freeflow Travel Time")
 plt.tight_layout()
 plt.savefig("traffic_flow.png")
 plt.show()

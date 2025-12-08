@@ -240,7 +240,7 @@ def main():
     create_SQL(conn)
     get_coords(conn, coordinate_points)
     results = num_description_and_visual(conn)
-    conn.close()
+    #conn.close()
     calc_and_write(results)
 
 
@@ -498,7 +498,7 @@ def walkscore_per_aqi():
         JOIN location_mapping lm ON aqi.location_id = lm.aqi_location_id
         JOIN walkscore_results ws ON ws.location_id = lm.location_id""")
     rows = cur.fetchall()
-    conn.close()
+    #conn.close()
 
     total_wp = {}
     walkers_paradise_counts = {}
@@ -576,7 +576,10 @@ counter = 0
 final_coordinates_score = []
 
 for item in traffic_list:
-    average = item + walkscore_list[counter] / 2
+    try:
+        average = item + walkscore_list[counter] / 2
+    except:
+        continue
     counter += 1
     final_coordinates_score.append(average)
 
@@ -604,15 +607,10 @@ print(len(final_coordinates_dict))
 
 conn.commit()
 
-<<<<<<< HEAD
 with open("outputs.txt", "a") as file:
-    f.write("Overall combined score for Walkscore and Traffic Flow. The higher the score, the more cars/car dependent the location is")
-=======
-with open("outputs.txt", "a") as f:
-    f.write(f"Overall combined score for Walkscore and Traffic Flow. The higher the score, the more cars/car dependent the location is")
->>>>>>> d9c25832144637668b27cef847d08f4eabdae2ee
+    file.write("\nOverall combined score for Walkscore and Traffic Flow. The higher the score, the more cars/car dependent the location is:\n")
     for key, value in final_coordinates_dict.items():
-        f.write(f"Overall combined score for {key}: {value}")
+        file.write(f"Overall combined score for {key}: {value}\n")
 
 def traffic_aqi_relationship():
     conn = sqlite3.connect("test.db")
@@ -626,7 +624,7 @@ def traffic_aqi_relationship():
     """)
 
     rows = cur.fetchall()
-    conn.close()
+    #conn.close()
 
     results = {}
 
@@ -675,3 +673,30 @@ def visualize_traffic_vs_aqi(traffic_vs_aqi):
 
 print("ABOUT TO DRAW GRAPH!!!!")
 visualize_traffic_vs_aqi(traffic_vs_aqi)
+
+# DANIEL'S VISUALISATION
+
+visualisation_dict = {}
+
+cur.execute("""
+SELECT freeflow_speed, freeflow_travel_time
+FROM DanTrafficFlow
+""")
+rows = cur.fetchall()
+for row in rows:
+    visualisation_dict[row[0]] = row[1]
+
+print(visualisation_dict)
+
+visualisation_sorted =sorted(visualisation_dict.items(), key=lambda x: x[1])
+song_name, play_count = zip(*visualisation_sorted)
+fig = plt.figure(1, figsize=(10,5))
+ax1 = fig.add_subplot(111)
+ax1.scatter(song_name, play_count, color = "green")
+ax1.ticklabel_format(axis="x", style="plain")
+ax1.set_xlabel("Freeflow Speed")
+ax1.set_ylabel("Freeflow Travel Time")
+ax1.set_title("Scatterplot of Freeflow Speed vs Freeflow Travel Time")
+plt.tight_layout()
+plt.savefig("traffic_flow.png")
+plt.show()
