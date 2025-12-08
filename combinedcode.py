@@ -464,16 +464,6 @@ def init_db():
     conn = sqlite3.connect(db_file)
     cur = conn.cursor()
 
-    #cities table
-    cur.execute("""
-    CREATE TABLE IF NOT EXISTS aqi_locations (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        latitude REAL NOT NULL,
-        longitude REAL NOT NULL,
-        UNIQUE(latitude, longitude)
-    );
-    """)
-
     cur.execute("""
     CREATE TABLE IF NOT EXISTS aqi_results (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -488,7 +478,7 @@ def init_db():
         so2 REAL,
         co REAL,
         raw_json TEXT,
-        FOREIGN KEY(location_id) REFERENCES aqi_locations(id)
+        FOREIGN KEY(location_id) REFERENCES locations(id)
     );
     """)
 
@@ -536,14 +526,12 @@ def get_top_cities_aqi():
         print("Getting AQI for:", lat, lon)
          
         cur.execute("""
-            INSERT OR IGNORE INTO aqi_locations (latitude, longitude)
-            VALUES (?, ?)
+            INSERT OR IGNORE INTO locations (latitude, longitude) VALUES (?, ?)
         """, (lat, lon))
         conn.commit()
 
         cur.execute("""
-            SELECT id FROM aqi_locations
-            WHERE latitude = ? AND longitude = ?
+            SELECT id FROM locations WHERE latitude=? AND longitude=?
         """, (lat, lon))
         loc_row = cur.fetchone()
         if not loc_row:
