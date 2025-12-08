@@ -616,3 +616,44 @@ with open("outputs.txt", "a") as file:
     f.write(f"Overall combined score for Walkscore and Traffic Flow. The higher the score, the more cars/car dependent the location is")
     for key, value in final_coordinates_dict.items():
         f.write(f"Overall combined score for {key}: {value}")
+
+def traffic_aqi_relationship():
+    conn = sqlite3.connect("test.db")
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT aqi.aqi, tf.current_speed, tf.freeflow_speed FROM aqi_results aqi
+                JOIN DanTrafficFlow tf ON aqi.location_id + tf.coordinates_id
+    """)
+    rows = cur.fetchall()
+    conn.close()
+
+    results = {}
+
+    for aqi_value, current, freeflow in rows:
+        category = aqi_category(aqi_value)
+
+        congestion = max(freeflow - current, 0)
+        if category not in results:
+            results[category] = {"total": 0, "count": 0}
+
+        results[category]["total"] += congestion
+        results[category]["count"] += 1
+    
+    final = {}
+    for category, info in results.items():
+        avg = info["total"] / info["count"] if info["count"] > 0 else 0
+        final[category] = {
+            "avg_congestion": avg,
+            "count": info["count"]
+        }
+    
+    return final
+
+traffic_vs_aqi = traffic_aqi_relationship()
+print(json.dumps(traffic_vs_aqi, indent=2))
+
+with open("outputs.txt", "a") as f:
+    f.write("\n\nTraffic Congestion vs AQI Category:\n")
+    for category, stats in traffic_vs_aqi.items():
+        f.write(f"{category}: Average Congestion = {stats['avg_congestion']}, Count = {stats['count']}\n")
