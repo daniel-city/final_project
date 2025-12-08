@@ -241,7 +241,7 @@ cur = conn.cursor()
 cur.execute("""
 DROP TABLE IF EXISTS DanTrafficFlow
 """)
-
+conn.commit()
 cur.execute("""
 CREATE TABLE IF NOT EXISTS DanTrafficFlow (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -253,6 +253,8 @@ coordinates_id INTEGER NOT NULL,
 FOREIGN KEY (coordinates_id) REFERENCES locations(id)
 )
 """)
+conn.commit()
+
 counter = 0
 
 for location in json_data:
@@ -279,7 +281,7 @@ for location in json_data:
 
     counter += 1
 
-# conn.commit()
+conn.commit()
 
 # for coordinate in coordinate_points:
 #     latitude = coordinate[:9]
@@ -530,10 +532,12 @@ rows_traffic = cur.fetchall()
 for row in rows_traffic:
     addition = row[0] + row[1]
     average = addition / 2
-    print(average)
+    #print(average)
     traffic_list.append(average)
 
-#print(traffic_list)
+print("THIS IS THE TRAFFIC DATA")
+print(traffic_list)
+print(len(traffic_list))
 
 walkscore_list = []
 
@@ -543,8 +547,8 @@ FROM walkscore_results
 """)
 rows_walkscore = cur.fetchall()
 for row in rows_walkscore:
-    print('THIS IS THE ROW')
-    print(row)
+    #print('THIS IS THE ROW')
+    #print(row)
     a = row[0] or 0
     b = row[1] or 0
     c = row[2] or 0
@@ -556,6 +560,9 @@ for row in rows_walkscore:
     reverse_walkscore = 100 - average
     walkscore_list.append(reverse_walkscore)
 
+print("THIS IS THE WALKSCORE DATA")
+print(walkscore_list)
+print(len(walkscore_list))
 
 counter = 0
 
@@ -576,9 +583,21 @@ final_coordinates_dict = {}
 rows_coordinates = cur.fetchall()
 counter_2 = 0
 for row in rows_coordinates:
-    final_coordinates_dict[row(0) + "," + row(1)] = final_coordinates_score[counter_2]
+    try:
+        final_coordinates_dict[f"{row[0]},{row[1]}"] = final_coordinates_score[counter_2]
+    except:
+        continue
     counter_2 += 1
 
+#print(final_coordinates_dict)
+
+print("THIS IS THE FINAL DICTIONARY")
 print(final_coordinates_dict)
+print(len(final_coordinates_dict))
 
 conn.commit()
+
+with open("outputs.txt", "a") as file:
+    f.write(f"Overall combined score for Walkscore and Traffic Flow. The higher the score, the more cars/car dependent the location is")
+    for key, value in final_coordinates_dict.items():
+        f.write(f"Overall combined score for {key}: {value}")
