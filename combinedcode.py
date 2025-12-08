@@ -10,7 +10,7 @@ micah_api_key = "823ebf192a9537ddb2cbb92ea29ff225"
 
 # DANIEL'S API KEY AND COORDINATES
 
-daniel_api_key = "WZ2qAuxTYFo7cOtQYZqISrrrdj6HSpYs"
+daniel_api_key = "rwB7lgYNsAsKDJupv7fHFd8MXaHuK8TQ"
 coordinate_points = [
     '40.7128,-74.0060',    # New York, NY
     '34.0522,-118.2437',   # Los Angeles, CA
@@ -598,6 +598,6 @@ print(len(final_coordinates_dict))
 conn.commit()
 
 with open("outputs.txt", "a") as file:
-    f.write(f"Overall combined score for Walkscore and Traffic Flow. The higher the score, the more cars/car dependent the location is")
+    f.write("Overall combined score for Walkscore and Traffic Flow. The higher the score, the more cars/car dependent the location is")
     for key, value in final_coordinates_dict.items():
         f.write(f"Overall combined score for {key}: {value}")
