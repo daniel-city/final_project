@@ -1,6 +1,15 @@
+<<<<<<< HEAD
 Total locations: 67
 
 Car-Dependent: 3
 Somewhat Walkable: 3
 Very Walkable: 19
 Walker's Paradise: 42
+=======
+Total locations: 87
+
+Car-Dependent: 6
+Somewhat Walkable: 3
+Very Walkable: 31
+Walker's Paradise: 47
+>>>>>>> 3976dd8c207d20011da6d356a2c6fbc41e693f1c
