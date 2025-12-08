@@ -191,7 +191,14 @@ def get_coords(conn, coords):
         data = get_walkscore(lat, lon)
         if not data or data.get("status") != 1:
             continue
+        
+        transit_score = data.get("transit", {}).get("score")
+        bike_score = data.get("bike", {}).get("score")
 
+        if transit_score is None:
+            transit_score = 0
+        if bike_score is None:
+            bike_score = 0
         cur.execute("""INSERT INTO walkscore_results (location_id, walkscore, description, transit_score, bike_score) VALUES (?, ?, ?, ?, ?)""",
         (location_id, data.get("walkscore"), data.get("description"), data.get("transit", {}).get("score"), data.get("bike", {}).get("score")))
         conn.commit()
