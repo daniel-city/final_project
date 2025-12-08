@@ -651,10 +651,17 @@ def traffic_aqi_relationship():
 traffic_vs_aqi = traffic_aqi_relationship()
 print(json.dumps(traffic_vs_aqi, indent=2))
 
-with open("outputs.txt", "a") as f:
-    f.write("\n\nTraffic Congestion vs AQI Category:\n")
+with open("outputs.txt", "a") as out:
+    out.write("\nTraffic Congestion × AQI Category Analysis\n")
+    out.write("This section summarizes the average traffic congestion levels for each AQI category.\n")
+    out.write("Congestion is calculated as: freeflow_speed - current_speed.\n\n")
+
     for category, stats in traffic_vs_aqi.items():
-        f.write(f"{category}: Average Congestion = {stats['avg_congestion']}, Count = {stats['count']}\n")
+        avg_cong = stats["avg_congestion"]
+        count = stats["count"]
+        out.write(f"\nAQI Category: {category}\n")
+        out.write(f"  • Data points: {count}\n")
+        out.write(f"  • Average congestion: {avg_cong:.2f}\n")
 
 def visualize_traffic_vs_aqi(traffic_vs_aqi):
     categories = list(traffic_vs_aqi.keys())
