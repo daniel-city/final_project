@@ -160,14 +160,18 @@ def create_SQL(conn):
         longitude REAL NOT NULL,
         UNIQUE(latitude, longitude));""")
 
-    cur.execute("""CREATE TABLE IF NOT EXISTS walkscore_results (id INTEGER PRIMARY KEY AUTOINCREMENT,
+    cur.execute("""CREATE TABLE IF NOT EXISTS description_categories (id INTEGER PRIMARY KEY AUTOINCREMENT,text TEXT UNIQUE);""")
+    
+    cur.execute("""CREATE TABLE IF NOT EXISTS walkscore_results (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         location_id INTEGER NOT NULL,
         walkscore INTEGER,
-        description TEXT,
+        description_id INTEGER,
         transit_score INTEGER,
         bike_score INTEGER,
         UNIQUE(location_id),
-        FOREIGN KEY(location_id) REFERENCES locations(id));""")
+        FOREIGN KEY(location_id) REFERENCES locations(id),
+        FOREIGN KEY(description_id) REFERENCES description_categories(id));""")
     conn.commit()
 
 
@@ -205,15 +209,31 @@ def get_coords(conn, coords):
             transit_score = 0
         if bike_score is None:
             bike_score = 0
-        cur.execute("""INSERT INTO walkscore_results (location_id, walkscore, description, transit_score, bike_score) VALUES (?, ?, ?, ?, ?)""",
-        (location_id, data.get("walkscore"), data.get("description"), transit_score, bike_score))
+        
+        description_text = data.get("description")
+        cur.execute(
+            "INSERT OR IGNORE INTO description_categories (text) VALUES (?)",
+            (description_text,)
+        )
+        conn.commit()
+
+        cur.execute(
+            "SELECT id FROM description_categories WHERE text=?",
+            (description_text,)
+        )
+        description_id = cur.fetchone()[0]
+
+        cur.execute("""INSERT INTO walkscore_results (location_id, walkscore, description_id, transit_score, bike_score) VALUES (?, ?, ?, ?, ?)""",
+        (location_id, data.get("walkscore"), description_id, transit_score, bike_score))
         conn.commit()
         time.sleep(1)
 
 
 def num_description_and_visual(conn):
     cur = conn.cursor()
-    cur.execute("SELECT description, COUNT(*) FROM walkscore_results GROUP BY description")
+    cur.execute("""SELECT d.text, COUNT(*) FROM walkscore_results w
+    JOIN description_categories d ON w.description_id = d.id
+    GROUP BY d.text""")
     results = cur.fetchall()
 
     descriptions = [desc for desc, count in results]
@@ -239,7 +259,7 @@ def calc_and_write(results):
             f.write(f"{description}: {count}\n")
 
 def main():
-    conn = sqlite3.connect("test.db")
+    conn = sqlite3.connect("walkscoretest.db")
     create_SQL(conn)
     get_coords(conn, coordinate_points)
     results = num_description_and_visual(conn)
@@ -249,54 +269,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-# def walkscore_per_aqi():
-#     conn = sqlite3.connect("test.db")
-#     cur = conn.cursor()
-#     cur.execute("""SELECT aqi.aqi, ws.description FROM aqi_results aqi
-#         JOIN location_mapping lm ON aqi.location_id = lm.aqi_location_id
-#         JOIN walkscore_results ws ON ws.location_id = lm.location_id""")
-#     rows = cur.fetchall()
-#     conn.close()
-
-#     total_wp = {}
-#     walkers_paradise_counts = {}
-
-#     for aqi, description in rows:
-#         category1 = aqi_category(aqi)
-#         total_wp[category1] = total_wp.get(category1, 0) + 1
-#         if description == "Walkers Paradise":
-#             walkers_paradise_counts[category1] = walkers_paradise_counts.get(category1, 0) + 1
-#     rates = {}
-#     for category, total in total_wp.items():
-#         wp_count = walkers_paradise_counts.get(category, 0)
-#         rates[category] = wp_count / total if total > 0 else 0
-#     return rates
-
-# def get_top_songs(db) -> dict:
-#     conn = sqlite3.connect(db)
-#     cur = conn.cursor()
-#     cur.execute("""SELECT tracks.name AS track_name, artists.name AS artist_name, COUNT(*) AS play_count FROM listening_history
-#         JOIN tracks ON listening_history.track_id = tracks.id
-#         JOIN albums ON tracks.album_id = albums.id
-#         JOIN artists ON albums.artist_id = artists.id
-#         GROUP BY tracks.name, artists.name
-#         ORDER BY play_count DESC
-#         LIMIT 5;""")
-#     rows = cur.fetchall()
-#     conn.close()
-
-#     top_songs = {}
-#     for track, artist, play_count in rows:
-#         top_songs[track] = play_count
-
-#     plt.figure(figsize=(10, 6))
-#     plt.barh(list(top_songs.keys()), list(top_songs.values()))
-#     plt.xlabel("Play Count")
-#     plt.title("Top 5 Most-Played Songs")
-#     plt.gca().invert_yaxis()
-#     plt.tight_layout()
-#     plt.savefig("top_songs.png")
-#     plt.close()
-
-#     return top_songs

@@ -204,14 +204,18 @@ def create_SQL(conn):
         longitude REAL NOT NULL,
         UNIQUE(latitude, longitude));""")
 
-    cur.execute("""CREATE TABLE IF NOT EXISTS walkscore_results (id INTEGER PRIMARY KEY AUTOINCREMENT,
+    cur.execute("""CREATE TABLE IF NOT EXISTS description_categories (id INTEGER PRIMARY KEY AUTOINCREMENT,text TEXT UNIQUE);""")
+    
+    cur.execute("""CREATE TABLE IF NOT EXISTS walkscore_results (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         location_id INTEGER NOT NULL,
         walkscore INTEGER,
-        description TEXT,
+        description_id INTEGER,
         transit_score INTEGER,
         bike_score INTEGER,
         UNIQUE(location_id),
-        FOREIGN KEY(location_id) REFERENCES locations(id));""")
+        FOREIGN KEY(location_id) REFERENCES locations(id),
+        FOREIGN KEY(description_id) REFERENCES description_categories(id));""")
     conn.commit()
 
 
@@ -248,15 +252,31 @@ def get_coords(conn, coords):
             transit_score = 0
         if bike_score is None:
             bike_score = 0
-        cur.execute("""INSERT INTO walkscore_results (location_id, walkscore, description, transit_score, bike_score) VALUES (?, ?, ?, ?, ?)""",
-        (location_id, data.get("walkscore"), data.get("description"), transit_score, bike_score))
+        
+        description_text = data.get("description")
+        cur.execute(
+            "INSERT OR IGNORE INTO description_categories (text) VALUES (?)",
+            (description_text,)
+        )
+        conn.commit()
+
+        cur.execute(
+            "SELECT id FROM description_categories WHERE text=?",
+            (description_text,)
+        )
+        description_id = cur.fetchone()[0]
+
+        cur.execute("""INSERT INTO walkscore_results (location_id, walkscore, description_id, transit_score, bike_score) VALUES (?, ?, ?, ?, ?)""",
+        (location_id, data.get("walkscore"), description_id, transit_score, bike_score))
         conn.commit()
         time.sleep(1)
 
 
 def num_description_and_visual(conn):
     cur = conn.cursor()
-    cur.execute("SELECT description, COUNT(*) FROM walkscore_results GROUP BY description")
+    cur.execute("""SELECT d.text, COUNT(*) FROM walkscore_results w
+    JOIN description_categories d ON w.description_id = d.id
+    GROUP BY d.text""")
     results = cur.fetchall()
 
     descriptions = [desc for desc, count in results]
