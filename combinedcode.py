@@ -303,7 +303,7 @@ def calc_and_write(results):
 
 
 def main():
-    conn = sqlite3.connect("test.db")
+    conn = sqlite3.connect("official.db")
     create_SQL(conn)
     get_coords(conn, coordinate_points)
     results = num_description_and_visual(conn)
@@ -316,7 +316,7 @@ if __name__ == "__main__":
 
 # DANIEL SQL CODE
 
-db_name = "test.db"
+db_name = "official.db"
 path = os.path.dirname(os.path.abspath(__file__))
 conn = sqlite3.connect(path + "/" + db_name)
 cur = conn.cursor()
@@ -392,7 +392,7 @@ conn.commit()
 amy_key = "bd1842990d39e66f7830f18d756cb443636008b7"
 
 raw_json_file = "aqi_data.json"
-db_file = "test.db"
+db_file = "official.db"
 
 batch_size = 25
 
@@ -568,27 +568,41 @@ def calculate_num_category_aq():
 # Calculation for Micah and Amy APIs
 
 def walkscore_per_aqi():
-    conn = sqlite3.connect("test.db")
+    conn = sqlite3.connect("official.db")
     cur = conn.cursor()
-    cur.execute("""SELECT aqi.aqi, ws.description FROM aqi_results aqi
-        JOIN location_mapping lm ON aqi.location_id = lm.aqi_location_id
-        JOIN walkscore_results ws ON ws.location_id = lm.location_id""")
+
+    cur.execute("""SELECT aqi.aqi, dc.text FROM aqi_results aqi
+        JOIN walkscore_results ws ON ws.location_id = aqi.location_id
+        JOIN description_categories dc ON ws.description_id = dc.id""")
     rows = cur.fetchall()
-    #conn.close()
+    conn.close()
 
     total_wp = {}
     walkers_paradise_counts = {}
 
     for aqi, description in rows:
-        category1 = aqi_category(aqi)
-        total_wp[category1] = total_wp.get(category1, 0) + 1
+        category = aqi_category(aqi)
+
+        total_wp[category] = total_wp.get(category, 0) + 1
         if description == "Walkers Paradise":
-            walkers_paradise_counts[category1] = walkers_paradise_counts.get(category1, 0) + 1
+            walkers_paradise_counts[category] = walkers_paradise_counts.get(category, 0) + 1
+
     rates = {}
     for category, total in total_wp.items():
         wp_count = walkers_paradise_counts.get(category, 0)
-        rates[category] = wp_count / total if total > 0 else 0
+        if total > 0:
+            rates[category] = wp_count / total 
+        else: 
+            rates[category] = 0
+
     return rates
+
+
+def write_walkscore_per_aqi(rates):
+    with open("outputs.txt", "a") as f:
+        f.write("\nWalkers Paradise Rate per AQI Category:\n")
+        for category, rate in rates.items():
+            f.write(f"{category}: {rate:.4f}\n")
 
 def main():
     print("Collecting AQI data (next 25 coords)...")
@@ -597,6 +611,9 @@ def main():
     print("\nAQI Category Summary:")
     summary = calculate_num_category_aq()
     print(json.dumps(summary, indent=2))
+    
+    aqi_rates = walkscore_per_aqi()
+    write_walkscore_per_aqi(aqi_rates)
 
 
 if __name__ == "__main__":
@@ -689,7 +706,7 @@ with open("outputs.txt", "a") as file:
         file.write(f"Overall combined score for {key}: {value}\n")
 
 def traffic_aqi_relationship():
-    conn = sqlite3.connect("test.db")
+    conn = sqlite3.connect("official.db")
     cur = conn.cursor()
 
     cur.execute("""
