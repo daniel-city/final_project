@@ -391,7 +391,6 @@ conn.commit()
 #amy code
 amy_key = "bd1842990d39e66f7830f18d756cb443636008b7"
 
-raw_json_file = "aqi_data.json"
 db_file = "official.db"
 
 batch_size = 25
@@ -415,15 +414,7 @@ def init_db():
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         location_id INTEGER NOT NULL,
         aqi INTEGER,
-        dominentpol TEXT,
-        time_utc TEXT,
-        pm25 REAL,
-        pm10 REAL,
-        o3 REAL,
-        no2 REAL,
-        so2 REAL,
-        co REAL,
-        raw_json TEXT,
+        dominentpol_id INTEGER,
         FOREIGN KEY(location_id) REFERENCES locations(id)
     );
     """)
@@ -447,16 +438,6 @@ def fetch_aqi(lat, lon):
     
 def get_top_cities_aqi():
     conn, cur = init_db()
-
-    # load existing raw json cache
-    if os.path.exists(raw_json_file):
-        try:
-            with open(raw_json_file, "r") as f:
-                raw_json_data = json.load(f)
-        except:
-            raw_json_data = []
-    else:
-        raw_json_data = []
 
     added = 0
 
@@ -488,38 +469,29 @@ def get_top_cities_aqi():
             print(f"  Failed to fetch AQI for {lat},{lon} (API returned error). Will retry later.")
             continue
 
-        # store raw API snapshot
-        raw_json_data.append({
-            "latitude": lat,
-            "longitude": lon,
-            "api_response": data
-        })
-        with open(raw_json_file, "w") as f:
-            json.dump(raw_json_data, f, indent=2)
-
         d = data.get("data", {})
-        iaqi = d.get("iaqi", {})
+        aqi_value = d.get("aqi")
 
-        def val(k):
-            if k in iaqi and isinstance(iaqi[k], dict):
-                return iaqi[k].get("v")
-            return None
+        dompol = d.get("dominentpol")
+
+        dompol_map = {
+            "pm25": 1,
+            "pm10": 2,
+            "o3": 3,
+            "no2": 4,
+            "so2": 5,
+            "co": 6
+        }
+        dompol_id = dompol_map.get(dompol, 0)  # 0 = unknown/unmapped
 
         cur.execute("""
             INSERT INTO aqi_results (
-                location_id, aqi, dominentpol, time_utc,
-                pm25, pm10, o3, no2, so2, co, raw_json
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, (
-            loc_id,
-            d.get("aqi"),
-            d.get("dominentpol"),
-            d.get("time", {}).get("iso"),
-            val("pm25"), val("pm10"), val("o3"), val("no2"),
-            val("so2"), val("co"),
-            json.dumps(data)
-        ))
+                location_id, aqi, dominentpol_id
+            ) VALUES (?, ?, ?)
+        """, (loc_id, aqi_value, dompol_id))
+
         conn.commit()
+
         added += 1
         print("  Added AQI entry for", lat, lon)
 
