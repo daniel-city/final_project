@@ -323,14 +323,14 @@ cur = conn.cursor()
 
 
 #maybe remove
-# cur.execute("""
-# DROP TABLE IF EXISTS DanTrafficFlow
-# """)
-# conn.commit()
+cur.execute("""
+DROP TABLE IF EXISTS DanTrafficFlow
+""")
+conn.commit()
 
 
 cur.execute("""
-CREATE TABLE IF NOT EXISTS DanTrafficFlow (
+CREATE TABLE IF NOT EXISTS TrafficFlow (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
 current_speed INTEGER,
 freeflow_speed INTEGER,
@@ -368,7 +368,7 @@ for location in json_data:
         location_id = location_id[0]
     
         cur.execute("""
-        INSERT OR IGNORE INTO DanTrafficFlow (current_speed, freeflow_speed, current_travel_time, freeflow_travel_time, location_id)
+        INSERT OR IGNORE INTO TrafficFlow (current_speed, freeflow_speed, current_travel_time, freeflow_travel_time, location_id)
         VALUES (?, ?, ?, ?, ?) """, (current_speed, freeflow_speed, current_travel_time, freeflow_travel_time, location_id))
         # rows_inserted += 1
         if cur.rowcount == 1:
@@ -386,6 +386,8 @@ conn.commit()
 #     VALUES (?, ?) """, (latitude, longitude))
 
 conn.commit()
+
+print(f"Inserted {rows_inserted} new rows")
 
 
 # CONN CLOSE
@@ -601,7 +603,7 @@ traffic_list = []
 
 cur.execute("""
 SELECT current_speed, freeflow_speed
-FROM DanTrafficFlow
+FROM TrafficFlow
 """)
 rows_traffic = cur.fetchall()
 for row in rows_traffic:
@@ -688,7 +690,7 @@ def traffic_aqi_relationship():
     SELECT aqi.aqi, tf.current_speed, tf.freeflow_speed
     FROM aqi_results aqi
     JOIN locations loc ON aqi.location_id = loc.id
-    JOIN DanTrafficFlow tf ON tf.location_id = loc.id
+    JOIN TrafficFlow tf ON tf.location_id = loc.id
     """)
 
     rows = cur.fetchall()
@@ -755,7 +757,7 @@ visualisation_dict = {}
 
 cur.execute("""
 SELECT freeflow_speed, freeflow_travel_time
-FROM DanTrafficFlow
+FROM TrafficFlow
 """)
 rows = cur.fetchall()
 for row in rows:
@@ -774,4 +776,33 @@ ax1.set_ylabel("Freeflow Travel Time")
 ax1.set_title("Scatterplot of Freeflow Speed vs Freeflow Travel Time")
 plt.tight_layout()
 plt.savefig("traffic_flow.png")
+plt.show()
+
+#EXTRA CREDIT VISUALISATION
+
+visualisation_dict_2 = {}
+
+cur.execute("""
+SELECT trafficflow.freeflow_travel_time, walkscore.transit_score
+FROM TrafficFlow trafficflow
+JOIN walkscore_results walkscore
+ON trafficflow.location_id = walkscore.location_id
+""")
+rows = cur.fetchall()
+for row in rows:
+    visualisation_dict_2[row[0]] = row[1]
+
+print(visualisation_dict_2)
+
+visualisation_2_sorted =sorted(visualisation_dict_2.items(), key=lambda x: x[1])
+freeflow_travel_time, transit_score = zip(*visualisation_2_sorted)
+fig = plt.figure(1, figsize=(10,5))
+ax1 = fig.add_subplot(111)
+ax1.scatter(freeflow_travel_time, transit_score, color = "brown")
+ax1.ticklabel_format(axis="x", style="plain")
+ax1.set_xlabel("Freeflow Travel Time")
+ax1.set_ylabel("Transit Score")
+ax1.set_title("Scatterplot of Freeflow Travel Time vs Transit Score")
+plt.tight_layout()
+plt.savefig("traffic_transit.png")
 plt.show()
