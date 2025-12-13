@@ -303,10 +303,10 @@ cur = conn.cursor()
 
 
 #maybe remove
-cur.execute("""
-DROP TABLE IF EXISTS DanTrafficFlow
-""")
-conn.commit()
+# cur.execute("""
+# DROP TABLE IF EXISTS DanTrafficFlow
+# """)
+# conn.commit()
 
 
 cur.execute("""
@@ -317,6 +317,7 @@ freeflow_speed INTEGER,
 current_travel_time INTEGER,
 freeflow_travel_time INTEGER,
 location_id INTEGER NOT NULL,
+UNIQUE(location_id, current_travel_time),
 FOREIGN KEY (location_id) REFERENCES locations(id)
 )
 """)
@@ -324,12 +325,12 @@ conn.commit()
 
 counter = 0
 
-# rows_inserted = 0
-# maximum_rows = 25
+rows_inserted = 0
+maximum_rows = 25
 
 for location in json_data:
-    # if rows_inserted >= maximum_rows:
-    #     break
+    if rows_inserted >= maximum_rows:
+        break
     current_speed = location["flowSegmentData"]["currentSpeed"]
     #print(current_speed)
     freeflow_speed = location["flowSegmentData"]["freeFlowSpeed"]
@@ -350,6 +351,8 @@ for location in json_data:
         INSERT OR IGNORE INTO DanTrafficFlow (current_speed, freeflow_speed, current_travel_time, freeflow_travel_time, location_id)
         VALUES (?, ?, ?, ?, ?) """, (current_speed, freeflow_speed, current_travel_time, freeflow_travel_time, location_id))
         # rows_inserted += 1
+        if cur.rowcount == 1:
+            rows_inserted += 1
 
     counter += 1
 
@@ -752,10 +755,10 @@ for row in rows:
 print(visualisation_dict)
 
 visualisation_sorted =sorted(visualisation_dict.items(), key=lambda x: x[1])
-song_name, play_count = zip(*visualisation_sorted)
+freeflow_speed, freeflow_travel_time = zip(*visualisation_sorted)
 fig = plt.figure(1, figsize=(10,5))
 ax1 = fig.add_subplot(111)
-ax1.scatter(song_name, play_count, color = "green")
+ax1.scatter(freeflow_speed, freeflow_travel_time, color = "green")
 ax1.ticklabel_format(axis="x", style="plain")
 ax1.set_xlabel("Freeflow Speed")
 ax1.set_ylabel("Freeflow Travel Time")
