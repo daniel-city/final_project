@@ -204,14 +204,18 @@ def create_SQL(conn):
         longitude REAL NOT NULL,
         UNIQUE(latitude, longitude));""")
 
-    cur.execute("""CREATE TABLE IF NOT EXISTS walkscore_results (id INTEGER PRIMARY KEY AUTOINCREMENT,
+    cur.execute("""CREATE TABLE IF NOT EXISTS description_categories (id INTEGER PRIMARY KEY AUTOINCREMENT,text TEXT UNIQUE);""")
+    
+    cur.execute("""CREATE TABLE IF NOT EXISTS walkscore_results (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         location_id INTEGER NOT NULL,
         walkscore INTEGER,
-        description TEXT,
+        description_id INTEGER,
         transit_score INTEGER,
         bike_score INTEGER,
         UNIQUE(location_id),
-        FOREIGN KEY(location_id) REFERENCES locations(id));""")
+        FOREIGN KEY(location_id) REFERENCES locations(id),
+        FOREIGN KEY(description_id) REFERENCES description_categories(id));""")
     conn.commit()
 
 
@@ -248,15 +252,31 @@ def get_coords(conn, coords):
             transit_score = 0
         if bike_score is None:
             bike_score = 0
-        cur.execute("""INSERT INTO walkscore_results (location_id, walkscore, description, transit_score, bike_score) VALUES (?, ?, ?, ?, ?)""",
-        (location_id, data.get("walkscore"), data.get("description"), transit_score, bike_score))
+        
+        description_text = data.get("description")
+        cur.execute(
+            "INSERT OR IGNORE INTO description_categories (text) VALUES (?)",
+            (description_text,)
+        )
+        conn.commit()
+
+        cur.execute(
+            "SELECT id FROM description_categories WHERE text=?",
+            (description_text,)
+        )
+        description_id = cur.fetchone()[0]
+
+        cur.execute("""INSERT INTO walkscore_results (location_id, walkscore, description_id, transit_score, bike_score) VALUES (?, ?, ?, ?, ?)""",
+        (location_id, data.get("walkscore"), description_id, transit_score, bike_score))
         conn.commit()
         time.sleep(1)
 
 
 def num_description_and_visual(conn):
     cur = conn.cursor()
-    cur.execute("SELECT description, COUNT(*) FROM walkscore_results GROUP BY description")
+    cur.execute("""SELECT d.text, COUNT(*) FROM walkscore_results w
+    JOIN description_categories d ON w.description_id = d.id
+    GROUP BY d.text""")
     results = cur.fetchall()
 
     descriptions = [desc for desc, count in results]
@@ -283,7 +303,7 @@ def calc_and_write(results):
 
 
 def main():
-    conn = sqlite3.connect("test.db")
+    conn = sqlite3.connect("official.db")
     create_SQL(conn)
     get_coords(conn, coordinate_points)
     results = num_description_and_visual(conn)
@@ -296,7 +316,7 @@ if __name__ == "__main__":
 
 # DANIEL SQL CODE
 
-db_name = "test.db"
+db_name = "official.db"
 path = os.path.dirname(os.path.abspath(__file__))
 conn = sqlite3.connect(path + "/" + db_name)
 cur = conn.cursor()
@@ -374,8 +394,7 @@ conn.commit()
 #amy code
 amy_key = "bd1842990d39e66f7830f18d756cb443636008b7"
 
-raw_json_file = "aqi_data.json"
-db_file = "test.db"
+db_file = "official.db"
 
 batch_size = 25
 
@@ -398,15 +417,7 @@ def init_db():
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         location_id INTEGER NOT NULL,
         aqi INTEGER,
-        dominentpol TEXT,
-        time_utc TEXT,
-        pm25 REAL,
-        pm10 REAL,
-        o3 REAL,
-        no2 REAL,
-        so2 REAL,
-        co REAL,
-        raw_json TEXT,
+        dominentpol_id INTEGER,
         FOREIGN KEY(location_id) REFERENCES locations(id)
     );
     """)
@@ -430,16 +441,6 @@ def fetch_aqi(lat, lon):
     
 def get_top_cities_aqi():
     conn, cur = init_db()
-
-    # load existing raw json cache
-    if os.path.exists(raw_json_file):
-        try:
-            with open(raw_json_file, "r") as f:
-                raw_json_data = json.load(f)
-        except:
-            raw_json_data = []
-    else:
-        raw_json_data = []
 
     added = 0
 
@@ -471,38 +472,29 @@ def get_top_cities_aqi():
             print(f"  Failed to fetch AQI for {lat},{lon} (API returned error). Will retry later.")
             continue
 
-        # store raw API snapshot
-        raw_json_data.append({
-            "latitude": lat,
-            "longitude": lon,
-            "api_response": data
-        })
-        with open(raw_json_file, "w") as f:
-            json.dump(raw_json_data, f, indent=2)
-
         d = data.get("data", {})
-        iaqi = d.get("iaqi", {})
+        aqi_value = d.get("aqi")
 
-        def val(k):
-            if k in iaqi and isinstance(iaqi[k], dict):
-                return iaqi[k].get("v")
-            return None
+        dompol = d.get("dominentpol")
+
+        dompol_map = {
+            "pm25": 1,
+            "pm10": 2,
+            "o3": 3,
+            "no2": 4,
+            "so2": 5,
+            "co": 6
+        }
+        dompol_id = dompol_map.get(dompol, 0)  # 0 = unknown/unmapped
 
         cur.execute("""
             INSERT INTO aqi_results (
-                location_id, aqi, dominentpol, time_utc,
-                pm25, pm10, o3, no2, so2, co, raw_json
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, (
-            loc_id,
-            d.get("aqi"),
-            d.get("dominentpol"),
-            d.get("time", {}).get("iso"),
-            val("pm25"), val("pm10"), val("o3"), val("no2"),
-            val("so2"), val("co"),
-            json.dumps(data)
-        ))
+                location_id, aqi, dominentpol_id
+            ) VALUES (?, ?, ?)
+        """, (loc_id, aqi_value, dompol_id))
+
         conn.commit()
+
         added += 1
         print("  Added AQI entry for", lat, lon)
 
@@ -551,27 +543,41 @@ def calculate_num_category_aq():
 # Calculation for Micah and Amy APIs
 
 def walkscore_per_aqi():
-    conn = sqlite3.connect("test.db")
+    conn = sqlite3.connect("official.db")
     cur = conn.cursor()
-    cur.execute("""SELECT aqi.aqi, ws.description FROM aqi_results aqi
-        JOIN location_mapping lm ON aqi.location_id = lm.aqi_location_id
-        JOIN walkscore_results ws ON ws.location_id = lm.location_id""")
+
+    cur.execute("""SELECT aqi.aqi, dc.text FROM aqi_results aqi
+        JOIN walkscore_results ws ON ws.location_id = aqi.location_id
+        JOIN description_categories dc ON ws.description_id = dc.id""")
     rows = cur.fetchall()
-    #conn.close()
+    conn.close()
 
     total_wp = {}
     walkers_paradise_counts = {}
 
     for aqi, description in rows:
-        category1 = aqi_category(aqi)
-        total_wp[category1] = total_wp.get(category1, 0) + 1
+        category = aqi_category(aqi)
+
+        total_wp[category] = total_wp.get(category, 0) + 1
         if description == "Walkers Paradise":
-            walkers_paradise_counts[category1] = walkers_paradise_counts.get(category1, 0) + 1
+            walkers_paradise_counts[category] = walkers_paradise_counts.get(category, 0) + 1
+
     rates = {}
     for category, total in total_wp.items():
         wp_count = walkers_paradise_counts.get(category, 0)
-        rates[category] = wp_count / total if total > 0 else 0
+        if total > 0:
+            rates[category] = wp_count / total 
+        else: 
+            rates[category] = 0
+
     return rates
+
+
+def write_walkscore_per_aqi(rates):
+    with open("outputs.txt", "a") as f:
+        f.write("\nWalkers Paradise Rate per AQI Category:\n")
+        for category, rate in rates.items():
+            f.write(f"{category}: {rate:.4f}\n")
 
 def main():
     print("Collecting AQI data (next 25 coords)...")
@@ -580,6 +586,9 @@ def main():
     print("\nAQI Category Summary:")
     summary = calculate_num_category_aq()
     print(json.dumps(summary, indent=2))
+    
+    aqi_rates = walkscore_per_aqi()
+    write_walkscore_per_aqi(aqi_rates)
 
 
 if __name__ == "__main__":
@@ -672,7 +681,7 @@ with open("outputs.txt", "a") as file:
         file.write(f"Overall combined score for {key}: {value}\n")
 
 def traffic_aqi_relationship():
-    conn = sqlite3.connect("test.db")
+    conn = sqlite3.connect("official.db")
     cur = conn.cursor()
 
     cur.execute("""
