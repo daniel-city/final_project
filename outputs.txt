@@ -147,9 +147,9 @@ Congestion is calculated as: freeflow_speed - current_speed.
 
 
 AQI Category: Good
-  • Data points: 130
-  • Average congestion: 7.09
+  • Data points: 204
+  • Average congestion: 6.34
 
 AQI Category: Moderate
-  • Data points: 45
-  • Average congestion: 7.56
+  • Data points: 71
+  • Average congestion: 6.65

@@ -806,3 +806,26 @@ ax1.set_title("Scatterplot of Freeflow Travel Time vs Transit Score")
 plt.tight_layout()
 plt.savefig("traffic_transit.png")
 plt.show()
+
+# EXTRA CREDIT VISUALISATION TWO
+
+cur = conn.cursor()
+cur.execute("""
+SELECT walkscore_value.walkscore, aqi_value.aqi 
+FROM walkscore_results walkscore_value
+JOIN aqi_results aqi_value ON walkscore_value.location_id = aqi_value.location_id
+""")
+results = cur.fetchall()
+
+descriptions = [desc for desc, count in results]
+counts = [count for desc, count in results]
+plt.figure(figsize=(10, 6))
+plt.scatter(descriptions, counts, color="gray")
+plt.xlabel("WalkScore")
+plt.ylabel("AQI")
+plt.title("AQI Value vs Walk Score Level")
+plt.gca().invert_yaxis()
+plt.tight_layout()
+plt.savefig("walkscore_aqi.png")
+plt.show()
+plt.close()
